@@ -1,41 +1,22 @@
 {% extends 'animals/base.html' %}
 {% load staticfiles %}
+
 {% block title_block %}
-Homepage
+Login 
 {% endblock %}
 
 {% block body_block %}
-        <h1>ANIMATCH</h1>
-        <div>
-            {% if user.is_authenticated %}
-                HI {{ user.username }}!
-            {% else %}
-                generic
-            {% endif %}
-            <strong>{{ boldmessage }}</strong><br />
-        </div>
-        <div>
-            <h2>generic</h2>
-        {% if categories %}
-            <ul>
-            {% for category in categories %}
-               
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>more generic things</strong>
-        {% endif %}
-        </div>
-            <h2>generic things</h2>
-        {% if pages %}
-            <ul>
-            {% for page in pages %}
-                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>Generic homepage</strong>
-        {% endif %}
-        </div>
-        
+<h1>Login to ANIMATCH</h1>
+
+<form id="login_form" method="post" action="{% url 'animals:login' %}">
+    {% csrf_token %}
+    Username: <input type="text" name="username" value="" size="50" />
+    <br />
+    Password: <input type="password" name="password" value="" size="50" />
+    <br />
+    <input type="submit" value="submit" />
+</form>
+
+<p>Don't have an account? <a href="{% url 'animals:signup' %}">Sign up here</a></p>
+
 {% endblock %}

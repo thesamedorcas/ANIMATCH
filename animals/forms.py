@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from rango.models import UserProfile
-from rango.models import Page, Category
+from animals.models import UserProfile
+from animals.models import Page, Category
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")
@@ -30,6 +30,7 @@ class PageForm(forms.ModelForm):
             cleaned_data['url'] = url
         
         return cleaned_data
+    
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     class Meta:

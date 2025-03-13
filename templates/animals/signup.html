@@ -1,41 +1,54 @@
 {% extends 'animals/base.html' %}
 {% load staticfiles %}
 {% block title_block %}
-Homepage
+Sign Up 
 {% endblock %}
 
 {% block body_block %}
-        <h1>ANIMATCH</h1>
-        <div>
-            {% if user.is_authenticated %}
-                HI {{ user.username }}!
-            {% else %}
-                generic
-            {% endif %}
-            <strong>{{ boldmessage }}</strong><br />
-        </div>
-        <div>
-            <h2>generic</h2>
-        {% if categories %}
-            <ul>
-            {% for category in categories %}
-               
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>more generic things</strong>
-        {% endif %}
-        </div>
-            <h2>generic things</h2>
-        {% if pages %}
-            <ul>
-            {% for page in pages %}
-                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>Generic homepage</strong>
-        {% endif %}
-        </div>
+<h1>Sign up for ANIMATCH</h1>
+
+{% if registered %}
+    <p>You have successfully signed up! You are now logged in.</p>
+    <p><a href="{% url 'animals:home' %}">Go to the homepage</a></p>
+{% else %}
+    <form id="signup_form" method="post" action="{% url 'animals:signup' %}" enctype="multipart/form-data">
+        {% csrf_token %}
         
+        <!-- User Information -->
+        <h2>User Information</h2>
+        <div>
+            <label for="id_username">Username:</label>
+            <input type="text" name="username" id="id_username" value="{{ user_form.username.value }}" size="50" required />
+        </div>
+
+        <div>
+            <label for="id_email">Email:</label>
+            <input type="email" name="email" id="id_email" value="{{ user_form.email.value }}" size="50" required />
+        </div>
+
+        <div>
+            <label for="id_password">Password:</label>
+            <input type="password" name="password" id="id_password" value="" size="50" required />
+        </div>
+
+        <!-- Profile Information -->
+        <h2>Profile Information</h2>
+        <div>
+            <label for="id_website">Website:</label>
+            <input type="url" name="website" id="id_website" value="{{ profile_form.website.value }}" size="50" />
+        </div>
+
+        <div>
+            <label for="id_picture">Profile Picture:</label>
+            <input type="file" name="picture" id="id_picture" />
+        </div>
+
+        <div>
+            <input type="submit" value="Sign Up" />
+        </div>
+    </form>
+
+    <p>Already have an account? <a href="{% url 'animals:login' %}">Log in here</a></p>
+{% endif %}
+
 {% endblock %}
