@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from animals.models import UserProfile
-from animals.models import Page, Category
+from django.contrib.auth.forms import UserCreationForm
+from animals.models import UserProfile, Page, Category
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")
@@ -21,6 +21,7 @@ class PageForm(forms.ModelForm):
     class Meta:
         model = Page
         exclude = ('category',)
+
     def clean(self):
         cleaned_data = self.cleaned_data
         url = cleaned_data.get('url')
@@ -30,12 +31,21 @@ class PageForm(forms.ModelForm):
             cleaned_data['url'] = url
         
         return cleaned_data
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = User
         fields = ('username', 'email', 'password',)
+
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('website', 'picture',)
+
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField(max_length=254, required=True, help_text='Required. Enter a valid email address.')
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')

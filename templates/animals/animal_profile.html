@@ -1,41 +1,39 @@
 {% extends 'animals/base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% block title_block %}
-Homepage
+Animal Profile
 {% endblock %}
 
 {% block body_block %}
-        <h1>ANIMATCH</h1>
-        <div>
-            {% if user.is_authenticated %}
-                HI {{ user.username }}!
-            {% else %}
-                generic
-            {% endif %}
-            <strong>{{ boldmessage }}</strong><br />
-        </div>
-        <div>
-            <h2>generic</h2>
-        {% if categories %}
-            <ul>
-            {% for category in categories %}
-               
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>more generic things</strong>
-        {% endif %}
-        </div>
-            <h2>generic things</h2>
-        {% if pages %}
-            <ul>
-            {% for page in pages %}
-                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>Generic homepage</strong>
-        {% endif %}
-        </div>
+    <h1>Animal Profile</h1>
+    <div>
+        <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+        <p>Name: {{ animal.name }}</p>
+        <p>Species: {{ animal.species }}</p>
+        <p>Breed: {{ animal.breed }}</p>
+        <p>Age: {{ animal.age }}</p>
+        <p>Sex: {{ animal.sex }}</p>
+        <p>About: {{ animal.about }}</p>
         
+        {% if user == animal.owner %}
+            <!-- Owner view -->
+            <form method="post" action="{% url 'animals:edit_animal' animal.id %}">
+                {% csrf_token %}
+                <label for="species">Species:</label>
+                <input type="text" id="species" name="species" value="{{ animal.species }}" required><br>
+                <label for="breed">Breed:</label>
+                <input type="text" id="breed" name="breed" value="{{ animal.breed }}" required><br>
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" value="{{ animal.age }}" required><br>
+                <label for="sex">Sex:</label>
+                <input type="text" id="sex" name="sex" value="{{ animal.sex }}" required><br>
+                <label for="about">About:</label>
+                <textarea id="about" name="about" required>{{ animal.about }}</textarea><br>
+                <button type="submit">Save Details</button>
+            </form>
+        {% else %}
+            <!-- Non-owner view -->
+            <button>Adopt</button>
+        {% endif %}
+    </div>
 {% endblock %}

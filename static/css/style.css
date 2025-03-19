@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+}
+
+header {
+    background: #228B22;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+header ul.nav-left {
+    flex: 1;
+}
+
+header ul.nav-center {
+    flex: 1;
+    justify-content: center;
+}
+
+header ul.nav-right {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+header ul li {
+    margin: 0 10px;
+}
+
+header ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+header ul li a:hover {
+    text-decoration: underline;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none;
+}
+
+.nav-button:hover {
+    text-decoration: underline;
+}
+
+main {
+    margin-top: 20px;
+}
+
+footer {
+    background: #228B22;
+    border-top: 1px solid #ccc;
+    padding: 10px 0;
+    text-align: center;
+}
+
+footer nav {
+    display: flex;
+    justify-content: center;
+}
+
+footer ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+footer ul li {
+    margin: 0 10px;
+}
+
+footer ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer ul li a:hover {
+    text-decoration: underline;
+}
+
+.welcome-message {
+    margin-bottom: 20px;
+}
+
+.matches-section, .filters-section, .search-results-section {
+    margin-bottom: 20px;
+}
+
+.matches-carousel {
+    display: flex;
+    align-items: center;
+}
+
+.carousel-button {
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.match {
+    margin: 0 10px;
+    text-align: center;
+}
+
+.filters-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.filters-section label {
+    margin-top: 10px;
+}
+
+.search-results {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.animal {
+    margin: 10px;
+    text-align: center;
+}
