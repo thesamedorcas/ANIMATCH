@@ -5,37 +5,17 @@ Homepage
 {% endblock %}
 
 {% block body_block %}
-        <h1>ANIMATCH</h1>
-        <div>
-            {% if user.is_authenticated %}
-                HI {{ user.username }}!
-            {% else %}
-                generic
-            {% endif %}
-            <strong>{{ boldmessage }}</strong><br />
-        </div>
-        <div>
-            <h2>generic</h2>
-        {% if categories %}
-            <ul>
-            {% for category in categories %}
-               
-            {% endfor %}
-            </ul>
+    <h1>Welcome to ANIMATCH</h1>
+    <div class="welcome-message">
+        {% if user.is_authenticated %}
+            <p>Hi {{ user.username }}!</p>
+            <p><a href="{% url 'animals:animals' %}">View Animals</a></p>
+            <form method="post" action="{% url 'animals:logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
         {% else %}
-            <strong>more generic things</strong>
+            <p>Welcome to Animatch! Please <a href="{% url 'animals:login' %}">login</a> or <a href="{% url 'animals:signup' %}">sign up</a>.</p>
         {% endif %}
-        </div>
-            <h2>generic things</h2>
-        {% if pages %}
-            <ul>
-            {% for page in pages %}
-                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>Generic homepage</strong>
-        {% endif %}
-        </div>
-        
+    </div>
 {% endblock %}

@@ -1,41 +1,25 @@
 {% extends 'animals/base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% block title_block %}
-Homepage
+My Account
 {% endblock %}
 
 {% block body_block %}
-        <h1>ANIMATCH</h1>
-        <div>
-            {% if user.is_authenticated %}
-                HI {{ user.username }}!
-            {% else %}
-                generic
-            {% endif %}
-            <strong>{{ boldmessage }}</strong><br />
-        </div>
-        <div>
-            <h2>generic</h2>
-        {% if categories %}
-            <ul>
-            {% for category in categories %}
-               
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>more generic things</strong>
-        {% endif %}
-        </div>
-            <h2>generic things</h2>
-        {% if pages %}
-            <ul>
-            {% for page in pages %}
-                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>Generic homepage</strong>
-        {% endif %}
-        </div>
-        
+    <h1>My Account</h1>
+    <div>
+        <h2>My Details</h2>
+        <p>Name: {{ user.username }}</p>
+        <p>Age: {{ user.profile.age }}</p>
+        <p>Location: {{ user.profile.location }}</p>
+        <p>Preference: {{ user.profile.preference }}</p>
+        <button>Edit</button>
+    </div>
+    <div>
+        <h2>My Saved</h2>
+        <!-- user's saved animals -->
+    </div>
+    <div>
+        <h2>My Posts</h2>
+        <!-- user's posts -->
+    </div>
 {% endblock %}

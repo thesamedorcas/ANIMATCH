@@ -1,41 +1,59 @@
 {% extends 'animals/base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% block title_block %}
-Homepage
+Animals
 {% endblock %}
 
 {% block body_block %}
-        <h1>ANIMATCH</h1>
-        <div>
-            {% if user.is_authenticated %}
-                HI {{ user.username }}!
-            {% else %}
-                generic
-            {% endif %}
-            <strong>{{ boldmessage }}</strong><br />
+    <h1>Animals</h1>
+    <div class="matches-section">
+        <h2>Your Matches</h2>
+        <div class="matches-carousel">
+            <button class="carousel-button">&lt;</button>
+            <div class="match">
+                <img src="{% static 'images/rex.jpg' %}" alt="Rex">
+                <p>Rex</p>
+            </div>
+            <div class="match">
+                <img src="{% static 'images/anabell.jpg' %}" alt="Anabell">
+                <p>Anabell</p>
+            </div>
+            <div class="match">
+                <img src="{% static 'images/rory.jpg' %}" alt="Rory">
+                <p>Rory</p>
+            </div>
+            <button class="carousel-button">&gt;</button>
         </div>
-        <div>
-            <h2>generic</h2>
-        {% if categories %}
-            <ul>
-            {% for category in categories %}
-               
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>more generic things</strong>
-        {% endif %}
+    </div>
+    
+    <div class="filters-section">
+        <h2>Filters</h2>
+        <form>
+            <label for="breed">Breed:</label>
+            <input type="text" id="breed" name="breed"><br>
+            <label for="age_min">Age min:</label>
+            <input type="number" id="age_min" name="age_min" value="0"><br>
+            <label for="age_max">Age max:</label>
+            <input type="number" id="age_max" name="age_max" value="80"><br>
+            <button type="submit">Apply Filters</button>
+        </form>
+    </div>
+    
+    <div class="search-results-section">
+        <h2>Search Animals</h2>
+        <div class="search-results">
+            <div class="animal">
+                <img src="{% static 'images/rex.jpg' %}" alt="Rex">
+                <p>Age: 14</p>
+                <p>Breed: Staffy</p>
+                <p>Sociable: Yes</p>
+            </div>
+            <div class="animal">
+                <img src="{% static 'images/anabell.jpg' %}" alt="Anabell">
+                <p>Age: 3</p>
+                <p>Breed: Bulldog</p>
+                <p>Sociable: No</p>
+            </div>
         </div>
-            <h2>generic things</h2>
-        {% if pages %}
-            <ul>
-            {% for page in pages %}
-                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>Generic homepage</strong>
-        {% endif %}
-        </div>
-        
+    </div>
 {% endblock %}
