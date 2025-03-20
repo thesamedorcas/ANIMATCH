@@ -1,10 +1,12 @@
 from django.contrib import admin
-from animals.models import Category, Page
+from animals.models import Animal, UserProfile
 from animals.models import UserProfile
 
-class CategoryAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug':('name',)}
+class AnimalAdmin(admin.ModelAdmin): #I changed the admin.py file to include the Animal model
+    list_display = ('name', 'species', 'breed', 'age', 'adopted')
+    list_filter = ('species', 'adopted', 'sociable')
+    search_fields = ('name', 'breed')
+    prepopulated_fields = {'slug': ('name',)}
 
-admin.site.register(Category, CategoryAdmin) 
-admin.site.register(Page)
+admin.site.register(Animal, AnimalAdmin)
 admin.site.register(UserProfile)

@@ -10,27 +10,37 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-class Category(models.Model):
-    NAME_MAX_LENGTH = 128 
-    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
-    views = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
-    slug = models.SlugField(unique = True)
 
+class Animal(models.Model):
+    SPECIES_CHOICES = [ #i wasn't sure what to put, so you can chnage this
+        ('Dog', 'Dog'),
+        ('Cat', 'Cat'),
+        ('Rabbit', 'Rabbit'),
+        ('Bird', 'Bird'),
+        ('Other', 'Other'),
+    ]
+    
+    SEX_CHOICES = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+    ]
+    
+    name = models.CharField(max_length=128)
+    species = models.CharField(max_length=20, choices=SPECIES_CHOICES)
+    breed = models.CharField(max_length=128)
+    age = models.IntegerField()
+    sex = models.CharField(max_length=10, choices=SEX_CHOICES)
+    about = models.TextField()
+    picture = models.ImageField(upload_to='animal_images', blank=True)
+    adopted = models.BooleanField(default=False)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='adopted_animals')
+    sociable = models.BooleanField(default=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(unique=True)
+    
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Category, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name_plural = 'categories'
-
+        self.slug = slugify(f"{self.name}-{self.id}")
+        super(Animal, self).save(*args, **kwargs)
+    
     def __str__(self):
         return self.name
-class Page(models.Model):
-    TITLE_MAX_LENGTH = 128 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    title = models.CharField(max_length=128)
-    url = models.URLField()
-    views = models.IntegerField(default=0)
-    def __str__(self):
-        return self.title

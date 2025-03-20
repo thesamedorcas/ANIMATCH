@@ -1,17 +1,18 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from animals.models import Category, Page
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from animals.models import Animal
 from animals.forms import UserForm, UserProfileForm, SignUpForm
 
 def home(request):
+    animal_list = Animal.objects.filter(adopted=False)[:5]
     context_dict = {}
     context_dict['boldmessage'] = 'Welcome to ANIMATCH!'
-    context_dict['categories'] = [] 
-    context_dict['pages'] = []  
+    context_dict['animals'] = animal_list
+    
     
     visitor_cookie_handler(request)
     
@@ -19,8 +20,11 @@ def home(request):
     return response
 
 def animals(request):
-    context_dict = {}
-    
+    all_animals = Animal.objects.all()
+    print(f"All animals: {all_animals}")
+    available_animals = Animal.objects.filter(adopted=False)
+    print(f"Available animals: {available_animals}")
+    context_dict = {'animals': available_animals}
     return render(request, 'animals/animals.html', context=context_dict)
 
 @login_required
@@ -67,10 +71,16 @@ def account(request):
     return render(request, 'animals/account.html', context=context_dict)
 
 @login_required
-def animal_profile(request):
-    context_dict = {}
+def animal_profile(request, animal_id):
+    try:
+        animal = Animal.objects.get(id=animal_id)
+    except Animal.DoesNotExist:
+        return redirect('animals:animals')
     
+          
+    context_dict = {'animal': animal}
     return render(request, 'animals/animal_profile.html', context=context_dict)
+
 
 def about(request):
     context_dict = {}
@@ -105,3 +115,4 @@ def visitor_cookie_handler(request):
         request.session['last_visit'] = last_visit_cookie
     
     request.session['visits'] = visits
+

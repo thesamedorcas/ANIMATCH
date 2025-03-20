@@ -7,13 +7,20 @@ Animal Profile
 {% block body_block %}
     <h1>Animal Profile</h1>
     <div>
-        <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+        {% if animal.picture %}
+            <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+        {% else %}
+            <img src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
+        {% endif %}
+
+        
         <p>Name: {{ animal.name }}</p>
         <p>Species: {{ animal.species }}</p>
         <p>Breed: {{ animal.breed }}</p>
         <p>Age: {{ animal.age }}</p>
         <p>Sex: {{ animal.sex }}</p>
         <p>About: {{ animal.about }}</p>
+        <p>Sociable: {% if animal.sociable %}Yes{% else %}No{% endif %}</p>
         
         {% if user == animal.owner %}
             <!-- Owner view -->
@@ -30,10 +37,19 @@ Animal Profile
                 <label for="about">About:</label>
                 <textarea id="about" name="about" required>{{ animal.about }}</textarea><br>
                 <button type="submit">Save Details</button>
+                <label for="sociable">Sociable:</label>
+                <select id="sociable" name="sociable">
+                    <option value="True" {% if animal.sociable %}selected{% endif %}>Yes</option>
+                    <option value="False" {% if not animal.sociable %}selected{% endif %}>No</option>
+                </select><br>
+                <button type="submit">Save Details</button>
             </form>
+            
         {% else %}
             <!-- Non-owner view -->
+            {% if user.is_authenticated %}
             <button>Adopt</button>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}

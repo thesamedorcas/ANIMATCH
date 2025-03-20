@@ -15,7 +15,7 @@ urlpatterns = [
 
     # Account
     path('account/', views.account, name='account'),
-    path('account/animalprofile/', views.animal_profile, name='animal_profile'),
+    path('account/<int:animal_id>/', views.animal_profile, name='animal_profile'),
 
     # Animals
     path('animals/', views.animals, name='animals'),
@@ -24,4 +24,6 @@ urlpatterns = [
     # Help
     path('about/', views.about, name='about'),
     path('faq/', views.faq, name='faq'),
+
+   
 ]
