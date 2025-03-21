@@ -5,14 +5,20 @@ Login
 {% endblock %}
 
 {% block body_block %}
+<div class="auth-container">
     <h1>Login</h1>
     <form method="post" action="{% url 'animals:login' %}">
         {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <button type="submit">Login</button>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn">Login</button>
     </form>
-    <p>Or, <a href="{% url 'animals:signup' %}">Signup</a></p>
+    <p class="auth-switch">Don't have an account? <a href="{% url 'animals:signup' %}">Sign up here</a>.</p>
+</div>
 {% endblock %}

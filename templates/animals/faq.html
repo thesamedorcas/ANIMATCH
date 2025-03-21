@@ -1,41 +1,45 @@
 {% extends 'animals/base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% block title_block %}
-Homepage
+FAQ
 {% endblock %}
 
 {% block body_block %}
-        <h1>ANIMATCH</h1>
-        <div>
-            {% if user.is_authenticated %}
-                HI {{ user.username }}!
-            {% else %}
-                generic
-            {% endif %}
-            <strong>{{ boldmessage }}</strong><br />
-        </div>
-        <div>
-            <h2>generic</h2>
-        {% if categories %}
-            <ul>
-            {% for category in categories %}
-               
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>more generic things</strong>
-        {% endif %}
-        </div>
-            <h2>generic things</h2>
-        {% if pages %}
-            <ul>
-            {% for page in pages %}
-                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <strong>Generic homepage</strong>
-        {% endif %}
-        </div>
-        
+<div class="faq-container">
+    <h1>Frequently Asked Questions</h1>
+    <section class="faq">
+        <article class="faq-item">
+            <h2>How do I sign up?</h2>
+            <p>Click on the Signup link and fill in your details.</p>
+        </article>
+        <article class="faq-item">
+            <h2>How do I apply for adoption?</h2>
+            <p>Browse the animal listings, select an animal that interests you, and click the "Apply to Adopt" button. Make sure you are logged in to apply.</p>
+        </article>
+        <article class="faq-item">
+            <h2>What happens after I apply for adoption?</h2>
+            <p>Your application will be reviewed to ensure your profile meets the criteria for the animal.</p>
+        </article>
+        <article class="faq-item">
+            <h2>How long does the adoption process take?</h2>
+            <p>The process duration may vary. Typically, you can expect a response within a few days. In some cases, further evaluation may be required.</p>
+        </article>
+        <article class="faq-item">
+            <h2>What if my adoption application is rejected?</h2>
+            <p>If your application doesn't meet the required criteria, we will provide feedback and suggestions for improvement.</p>
+        </article>
+        <article class="faq-item">
+            <h2>Can I update my profile after signing up?</h2>
+            <p>Yes, you can update your personal details anytime in the "My Account" section.</p>
+        </article>
+        <article class="faq-item">
+            <h2>How do I add or remove an animal listing?</h2>
+            <p>Once logged in, navigate to your account to manage your animal listings. You can add new listings or remove existing ones as needed.</p>
+        </article>
+        <article class="faq-item">
+            <h2>Who can see my animal listing?</h2>
+            <p>All public animal listings are visible to anyone browsing the site. However, only logged in users can apply for adoption.</p>
+        </article>
+    </section>
+</div>
 {% endblock %}
