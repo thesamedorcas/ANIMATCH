@@ -8,37 +8,44 @@
 </head>
 <body>
     <header>
-        <nav>
-            <ul class="nav-center">
-                <li><a href="{% url 'animals:home' %}">ANIMATCH</a></li>
-            </ul>
-            <ul class="nav-right">
-                {% if user.is_authenticated %}
-                    <li>Welcome, {{ user.username }}</li>
-                    <li><a href="{% url 'animals:account' %}">My Account</a></li>
-                    <li>
-                        <form method="post" action="{% url 'animals:logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="nav-button">Logout</button>
-                        </form>
-                    </li>
-                {% else %}
-                    <li><a href="{% url 'animals:login' %}">Login</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+        <div class="header-container">
+            <div class="logo">
+                <a href="{% url 'animals:home' %}">ANIMATCH</a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'animals:account' %}">My Account</a></li>
+                        <li>
+                            <form method="post" action="{% url 'animals:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-button">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'animals:login' %}">Login</a></li>
+                        <li><a href="{% url 'animals:signup' %}">Signup</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </header>
     <main>
-        {% block body_block %}
-        {% endblock %}
+        <div class="content-container">
+            {% block body_block %}
+            {% endblock %}
+        </div>
     </main>
     <footer>
-        <nav>
-            <ul class="footer-nav">
-                <li><a href="{% url 'animals:home' %}">ANIMATCH</a></li>
-                <li><a href="{% url 'animals:about' %}">About Us</a></li>
-            </ul>
-        </nav>
+        <div class="footer-container">
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="{% url 'animals:home' %}">ANIMATCH</a></li>
+                    <li><a href="{% url 'animals:about' %}">About Us</a></li>
+                    <li><a href="{% url 'animals:faq' %}">FAQ</a></li>
+                </ul>
+            </nav>
+        </div>
     </footer>
 </body>
 </html>

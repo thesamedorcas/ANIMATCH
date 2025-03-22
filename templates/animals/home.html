@@ -1,21 +1,23 @@
 {% extends 'animals/base.html' %}
 {% load static %}
 {% block title_block %}
-Homepage
+Home
 {% endblock %}
 
 {% block body_block %}
     <h1>Welcome to ANIMATCH</h1>
     <div class="welcome-message">
         {% if user.is_authenticated %}
-            <p>Hi {{ user.username }}!</p>
+            <p>Hello, {{ user.username }}!</p>
+            <p> Explore the animals waiting for a loving home.</p>
             <p><a href="{% url 'animals:animals' %}">View Animals</a></p>
             <form method="post" action="{% url 'animals:logout' %}">
                 {% csrf_token %}
                 <button type="submit">Logout</button>
             </form>
         {% else %}
-            <p>Welcome to Animatch! Please <a href="{% url 'animals:login' %}">login</a> or <a href="{% url 'animals:signup' %}">sign up</a>.</p>
+            <p>Thank you for visiting Animatch!</p>
+            <p>Please <a href="{% url 'animals:login' %}">login</a> or <a href="{% url 'animals:signup' %}">sign up</a> to start your adoption journey.</p>
         {% endif %}
     </div>
 {% endblock %}

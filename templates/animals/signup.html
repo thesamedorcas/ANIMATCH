@@ -5,11 +5,13 @@ Signup
 {% endblock %}
 
 {% block body_block %}
-    <h1>Signup</h1>
+<div class="auth-container">
+    <h1>Create an Account</h1>
     <form method="post" action="{% url 'animals:signup' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Signup</button>
+        <button type="submit" class="btn">Signup</button>
     </form>
-    <p>Or, <a href="{% url 'animals:login' %}">Login</a></p>
+    <p class="auth-switch">Already have an account? <a href="{% url 'animals:login' %}">Login here</a>.</p>
+</div>
 {% endblock %}
