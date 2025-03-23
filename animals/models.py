@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -33,7 +34,7 @@ class Animal(models.Model):
     about = models.TextField()
     picture = models.ImageField(upload_to='animal_images', blank=True)
     adopted = models.BooleanField(default=False)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='adopted_animals')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='adopted_animals')
     sociable = models.BooleanField(default=True)
     date_added = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True)
