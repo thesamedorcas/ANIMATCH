@@ -81,6 +81,10 @@ def animal_profile(request, animal_id):
     context_dict = {'animal': animal}
     return render(request, 'animals/animal_profile.html', context=context_dict)
 
+@login_required
+def edit_animal():
+    return redirect('/')
+
 
 def about(request):
     context_dict = {}

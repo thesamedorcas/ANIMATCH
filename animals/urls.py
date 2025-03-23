@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import urls
 from animals import views
 
 app_name = 'animals'
@@ -16,6 +17,7 @@ urlpatterns = [
     # Account
     path('account/', views.account, name='account'),
     path('account/<int:animal_id>/', views.animal_profile, name='animal_profile'),
+    path('account/add_animal',views.edit_animal, name='edit_animal'),
 
     # Animals
     path('animals/', views.animals, name='animals'),
