@@ -101,7 +101,7 @@ Animal Profile
 
             <div id="animal-form-submit">
 
-                <button type="button" onclick="cancel()"> Cancel</button>
+                <button type="button" onclick="history.back()"> Go Back</button>
                 <button type="submit">Adopt</button>
 
             </div>
@@ -115,42 +115,42 @@ Animal Profile
 
 </div>
 
-{% if is_owner %} 
+{% if is_owner %}
 
-        <!--JS for edit and add-->
-        <script>
+<!--JS for edit and add-->
+<script>
 
-            function previewUpload() {
-                var selector = document.getElementById("pictureSelect");
-                if (selector.files.length > 0) {
-                    picture = URL.createObjectURL(selector.files[0]);
-                    pictureFrame = document.getElementById("pictureFrame");
-                    pictureFrame.src = picture;
-                }
-            }
+    function previewUpload() {
+        var selector = document.getElementById("pictureSelect");
+        if (selector.files.length > 0) {
+            picture = URL.createObjectURL(selector.files[0]);
+            pictureFrame = document.getElementById("pictureFrame");
+            pictureFrame.src = picture;
+        }
+    }
 
-            function cancel() {
-                location.href = "{% url 'animals:account' %}";
-            }
+    function cancel() {
+        location.href = "{% url 'animals:account' %}";
+    }
 
-        </script>
-        {% else %}
+</script>
+{% else %}
 
-        <!-- User is not owner  -->
+<!-- User is not owner  -->
 
-        <script>
+<script>
 
-            function disableForm() {
-                var inputs = document.getElementsByTagName("Input");
-                for (var i = inputs.length - 1; i >= 0; i--) {
-                    inputs[i].readOnly = "True";
-                }
-            }
+    function disableForm() {
+        var inputs = document.getElementsByTagName("Input");
+        for (var i = inputs.length - 1; i >= 0; i--) {
+            inputs[i].readOnly = "True";
+        }
+    }
 
-            disableForm();
+    disableForm();
 
-        </script>
+</script>
 
-        {% endif %}
+{% endif %}
 
 {% endblock %}
