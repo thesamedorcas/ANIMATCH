@@ -111,17 +111,29 @@ def add_animal(request):
             #save animal to generate unique slug
             animal.save()
             return redirect('animals:account')
-        #validate form
-        #create animal
-        #send to request and new animal id to edit animal
 
     context_dict = {'animal': Animal,
-                    'is_owner':True}
+                    'is_owner':True,
+                    'page_function':'add'}
     return render(request, 'animals/animal_profile.html', context=context_dict)
     
 @login_required
 def edit_animal(request, animal_id):
-    return
+    try:
+        animal = Animal.objects.get(id=animal_id)
+    except Animal.DoesNotExist:
+        return redirect('animals:animals')
+    
+    if (request.user == animal.owner) :
+        is_owner = True
+    else:
+        is_owner = False
+    
+    
+    context_dict = {'animal': animal,
+                    'is_owner':is_owner}
+    
+    return render(request, 'animals/animal_profile.html', context=context_dict)
 
 
 

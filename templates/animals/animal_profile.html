@@ -10,9 +10,9 @@ Animal Profile
     <div id="animal-leftblock">
 
         {% if animal.picture %}
-        <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+        <img id="pictureFrame" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
         {% else %}
-        <img src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
+        <img id="pictureFrame" src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
         {% endif %}
 
         {%if is_owner %}
@@ -28,7 +28,13 @@ Animal Profile
     <div id="animal-rightblock">
         <div class="form-field">
             <label for="species">Species:</label>
-            <input form="animal-form" type="text" id="species" name="species" value="{{ animal.species }}" required><br>
+            <select form="animal-form" id="species" name="species">
+                <option value="Dog" {% if animal.species == "Dog" %}selected{% endif %}>dog</option>
+                <option value="Cat" {% if animal.species == "Cat" %}selected{% endif %}>cat</option>
+                <option value="Rabbit" {% if animal.species == "Rabbit" %}selected{% endif %}>rabbit</option>
+                <option value="Bird" {% if animal.species == "Bird" %}selected{% endif %}>bird</option>
+                <option value="Other" {% if animal.species == "Other" %}selected{% endif %}>other</option>
+            </select><br>
         </div>
         <div class="form-field">
             <label for="breed">Breed:</label>
@@ -40,10 +46,14 @@ Animal Profile
         </div>
         <div class="form-field">
             <label for="sex">Sex:</label>
-            <input form="animal-form" type="text" id="sex" name="sex" value="{{ animal.sex }}" required><br>
+            <select form="animal-form" id="sex" name="sex">
+                <option value="Male" {% if animal.sex == 'Male' %}selected{% endif %}>Male</option>
+                <option value="Female" {% if animal.sex == 'Female' %}selected{% endif %}>Female</option>
+            </select><br>
         </div>
 
-        <div class="form-field"><label for="sociable">Sociable:</label>
+        <div class="form-field">
+            <label for="sociable">Sociable:</label>
             <select form="animal-form" id="sociable" name="sociable">
                 <option value="True" {% if animal.sociable %}selected{% endif %}>Yes</option>
                 <option value="False" {% if not animal.sociable %}selected{% endif %}>No</option>
@@ -53,7 +63,23 @@ Animal Profile
             <textarea form="animal-form" id=" about" name="about" required>{{ animal.about }}</textarea><br>
         </div>
         {% if is_owner %}
+        <!-- User is owner -->
+        {%if page_function == 'add' %}
         <form method="post" action="{% url 'animals:add_animal' %}" id="animal-form">
+            <!-- User wants to add a new animal -->
+            {% csrf_token %}
+
+            <div id="animal-form-submit">
+
+                <button type="button" onclick="cancel()"> Cancel</button>
+                <button type="submit">Save Details</button>
+
+            </div>
+        </form>
+
+        {% else %}
+        <!-- User wants to edit their animal profile -->
+        <form method="post" action="{% url 'animals:edit_animal' animal.id %}" id="animal-form">
 
             {% csrf_token %}
 
@@ -64,17 +90,23 @@ Animal Profile
 
             </div>
         </form>
+
+        {% endif %}
         {% else %}
 
-        {% csrf_token %}
 
-        <div id="animal-form-submit">
+        <form method="post" action="" id="animal-form">
 
-            <button type="button" onclick="cancel()"> Cancel</button>
-            <button type="submit">Save Details</button>
+            {% csrf_token %}
 
-        </div>
+            <div id="animal-form-submit">
+
+                <button type="button" onclick="cancel()"> Cancel</button>
+                <button type="submit">Adopt</button>
+
+            </div>
         </form>
+
         {% endif %}
 
 
@@ -83,20 +115,42 @@ Animal Profile
 
 </div>
 
-<script>
+{% if is_owner %} 
 
-    function previewUpload() {
-        var selector = document.getElementById("pictureSelect");
-        if (selector.files.length > 0) {
-            picture = URL.createObjectURL(selector.files[0]);
-            pictureFrame = document.getElementById("pictureFrame");
-            pictureFrame.src = picture;
-        }
-    }
+        <!--JS for edit and add-->
+        <script>
 
-    function cancel() {
-        location.href = "{% url 'animals:account' %}";
-    }
+            function previewUpload() {
+                var selector = document.getElementById("pictureSelect");
+                if (selector.files.length > 0) {
+                    picture = URL.createObjectURL(selector.files[0]);
+                    pictureFrame = document.getElementById("pictureFrame");
+                    pictureFrame.src = picture;
+                }
+            }
 
-</script>
+            function cancel() {
+                location.href = "{% url 'animals:account' %}";
+            }
+
+        </script>
+        {% else %}
+
+        <!-- User is not owner  -->
+
+        <script>
+
+            function disableForm() {
+                var inputs = document.getElementsByTagName("Input");
+                for (var i = inputs.length - 1; i >= 0; i--) {
+                    inputs[i].readOnly = "True";
+                }
+            }
+
+            disableForm();
+
+        </script>
+
+        {% endif %}
+
 {% endblock %}

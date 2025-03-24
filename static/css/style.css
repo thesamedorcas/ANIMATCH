@@ -343,6 +343,10 @@ footer {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    height: 500px;
+    min-height: 500px;
     gap: 5%
+}
+
+#pictureFrame {
+    width: 100%;
 }
