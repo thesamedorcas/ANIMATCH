@@ -65,7 +65,7 @@ Animal Profile
         {% if is_owner %}
         <!-- User is owner -->
         {%if page_function == 'add' %}
-        <form method="post" action="{% url 'animals:add_animal' %}" id="animal-form">
+        <form method="post" action="{% url 'animals:add_animal' %}" id="animal-form" enctype="multipart/form-data">
             <!-- User wants to add a new animal -->
             {% csrf_token %}
 
@@ -79,7 +79,7 @@ Animal Profile
 
         {% else %}
         <!-- User wants to edit their animal profile -->
-        <form method="post" action="{% url 'animals:edit_animal' animal.id %}" id="animal-form">
+        <form method="post" action="{% url 'animals:edit_animal' animal.id %}" id="animal-form" enctype="multipart/form-data">
 
             {% csrf_token %}
 

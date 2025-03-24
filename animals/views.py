@@ -94,25 +94,17 @@ def add_animal(request):
     
     if request.method == "POST":
 
-        form = AnimalForm(request.POST)
+        form = AnimalForm(request.POST,request.FILES)
         #validate form
         if form.is_valid():
             #create animal with temporary slug, non unique
-            animal = Animal.objects.create(
-                name=request.POST.get("name"),
-                species=request.POST.get("species"),
-                breed=request.POST.get("breed"),
-                age=request.POST.get("age"),
-                sex=request.POST.get("sex"),
-                about=request.POST.get("about"),
-                owner=request.user,
-                sociable=request.POST.get("sociable"),
-            )
-            #save animal to generate unique slug
+            animal = form.save(commit=False)
+            animal.owner = request.user
             animal.save()
             return redirect('animals:account')
 
     context_dict = {'animal': Animal,
+                    'form':AnimalForm(),
                     'is_owner':True,
                     'page_function':'add'}
     return render(request, 'animals/animal_profile.html', context=context_dict)
@@ -128,9 +120,22 @@ def edit_animal(request, animal_id):
         is_owner = True
     else:
         is_owner = False
-    
+
+    #edit animal details if post request and is owner
+    if (request.method == "POST") and is_owner:
+
+        #check form is valid using animal instance
+        animal = Animal.objects.get(id=animal_id)
+        form = AnimalForm(request.POST,request.FILES,instance=animal)
+
+        #if form valid save and commit changes and return to profile
+        if form.is_valid():
+            form.save()
+            return redirect('animals:account')
+
     
     context_dict = {'animal': animal,
+                    'form':AnimalForm(),
                     'is_owner':is_owner}
     
     return render(request, 'animals/animal_profile.html', context=context_dict)

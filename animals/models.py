@@ -42,12 +42,18 @@ class Animal(models.Model):
     
     def save(self, *args, **kwargs):
         if  self.id:
+            #if animal has been save to database and have id, create unique slug
             self.slug = slugify(f"{self.name}-{self.id}")
+            super(Animal, self).save(*args, **kwargs)
         else:
-            #generate temporary slug from pet name, time since epoc, and user id
+            #if animal does not have unique id, save with temp slug  made from name, time of request and users unique id,
+            #then resave to create unique
             strtime = time.time()
             self.slug = slugify(f"{self.name}-{strtime}-{self.owner.id}")
-        super(Animal, self).save(*args, **kwargs)
+            super(Animal, self).save(*args, **kwargs)
+            self.save()
+
+
 
 
     def __str__(self):
