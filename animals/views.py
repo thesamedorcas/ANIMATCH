@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.template.defaultfilters import slugify
 from datetime import datetime
 from animals.models import Animal
-from animals.forms import UserForm, UserProfileForm, SignUpForm
+from animals.forms import AnimalForm, UserForm, UserProfileForm, SignUpForm
 
 def home(request):
     animal_list = Animal.objects.filter(adopted=False)[:5]
@@ -77,13 +78,51 @@ def animal_profile(request, animal_id):
     except Animal.DoesNotExist:
         return redirect('animals:animals')
     
-          
-    context_dict = {'animal': animal}
+    if (request.user == animal.owner) :
+        is_owner = True
+    else:
+        is_owner = False
+    
+    
+    context_dict = {'animal': animal,
+                    'is_owner':is_owner}
+    
     return render(request, 'animals/animal_profile.html', context=context_dict)
 
 @login_required
-def edit_animal():
-    return redirect('/')
+def add_animal(request):
+    
+    if request.method == "POST":
+
+        form = AnimalForm(request.POST)
+        #validate form
+        if form.is_valid():
+            #create animal with temporary slug, non unique
+            animal = Animal.objects.create(
+                name=request.POST.get("name"),
+                species=request.POST.get("species"),
+                breed=request.POST.get("breed"),
+                age=request.POST.get("age"),
+                sex=request.POST.get("sex"),
+                about=request.POST.get("about"),
+                owner=request.user,
+                sociable=request.POST.get("sociable"),
+            )
+            #save animal to generate unique slug
+            animal.save()
+            return redirect('animals:account')
+        #validate form
+        #create animal
+        #send to request and new animal id to edit animal
+
+    context_dict = {'animal': Animal,
+                    'is_owner':True}
+    return render(request, 'animals/animal_profile.html', context=context_dict)
+    
+@login_required
+def edit_animal(request, animal_id):
+    return
+
 
 
 def about(request):

@@ -5,21 +5,24 @@ My Account
 {% endblock %}
 
 {% block body_block %}
-    <h1>My Account</h1>
-    <div>
-        <h2>My Details</h2>
-        <p>Name: {{ user.username }}</p>
-        <p>Age: {{ user.profile.age }}</p>
-        <p>Location: {{ user.profile.location }}</p>
-        <p>Preference: {{ user.profile.preference }}</p>
-        <button>Edit</button>
-    </div>
-    <div>
-        <h2>My Saved</h2>
-        <!-- user's saved animals -->
-    </div>
-    <div>
-        <h2>My Posts</h2>
-        <!-- user's posts -->
-    </div>
+<h1>My Account</h1>
+<div>
+    <h2>My Details</h2>
+    <p>Name: {{ user.username }}</p>
+    <p>Age: {{ user.profile.age }}</p>
+    <p>Location: {{ user.profile.location }}</p>
+    <p>Preference: {{ user.profile.preference }}</p>
+    <button>Edit</button>
+</div>
+<div>
+    <h2>My Saved</h2>
+    <!-- user's saved animals -->
+</div>
+<div>
+    <h2>My Posts</h2>
+    <!-- user's posts -->
+    <a href="{% url 'animals:add_animal' %}">
+        Add Animal
+    </a>
+</div>
 {% endblock %}

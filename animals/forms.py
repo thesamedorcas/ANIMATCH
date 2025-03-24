@@ -7,6 +7,7 @@ class AnimalForm(forms.ModelForm):
     name = forms.CharField(max_length=128, help_text="Please enter the animal's name.")
     about = forms.CharField(widget=forms.Textarea, help_text="Please provide information about the animal.")
     slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+    picture = forms.ImageField(required=True,initial="profile_images/default.png")
 
     class Meta:
         model = Animal

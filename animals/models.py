@@ -1,3 +1,4 @@
+import time
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
@@ -6,7 +7,7 @@ from django.conf import settings
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     website = models.URLField(blank=True)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
+    picture = models.ImageField(upload_to='profile_images/', blank=True)
 
     def __str__(self):
         return self.user.username
@@ -40,8 +41,14 @@ class Animal(models.Model):
     slug = models.SlugField(unique=True)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(f"{self.name}-{self.id}")
+        if  self.id:
+            self.slug = slugify(f"{self.name}-{self.id}")
+        else:
+            #generate temporary slug from pet name, time since epoc, and user id
+            strtime = time.time()
+            self.slug = slugify(f"{self.name}-{strtime}-{self.owner.id}")
         super(Animal, self).save(*args, **kwargs)
-    
+
+
     def __str__(self):
         return self.name
