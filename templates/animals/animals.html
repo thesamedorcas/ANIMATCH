@@ -82,9 +82,9 @@ Animals for adoption
         <div class="animal-card">
             <div class="animal-image">
                         {% if animal.picture %}
-                            <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+                            <img class="animal-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
                         {% else %}
-                            <img src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
+                            <img class="animal-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
                         {% endif %}
             </div>
                         <div class="animal-info">
