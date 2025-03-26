@@ -128,7 +128,12 @@ def login_view(request):
 def account(request):
     favorites = Favorite.objects.filter(user=request.user)
     my_animals = Animal.objects.filter(owner=request.user)
-
+    adoption_requests = AdoptionRequest.objects.filter(
+        animal__owner=request.user
+    ).order_by('-date_submitted')
+    user_adoption_requests = AdoptionRequest.objects.filter(
+        user=request.user
+    ).order_by('-date_submitted')
     #temporary admin check we can change this to user later if you want
     is_admin = request.user.username in ['dorcas', 'euan', 'machan', 'andrea', 'arman']
     
@@ -137,6 +142,7 @@ def account(request):
         'favorites': favorites,
         'my_animals': my_animals,
         'is_admin': is_admin,
+        'user_adoption_requests': user_adoption_requests,
         'species_choices': Animal.SPECIES_CHOICES,
         'sex_choices': Animal.SEX_CHOICES,
     }
@@ -192,11 +198,16 @@ def request_adoption(request, animal_id):
     existing_request = AdoptionRequest.objects.filter(
         user=request.user,
         animal=animal,
-        status='pending'
-    ).exists()
+        
+    ).first()
     
     if existing_request:
-        messages.warning(request, f"generic already existing adoption request message {animal.name}.")
+        if existing_request.status == 'pending':
+            messages.warning(request, f"You already have a pending adoption request for {animal.name}.")
+        elif existing_request.status == 'approved':
+            messages.success(request, f"Your request to adopt {animal.name} has been approved!")
+        elif existing_request.status == 'rejected':
+            messages.error(request, f"Your request to adopt {animal.name} was previously rejected.")
         return redirect('animals:animal_profile', animal_id=animal_id)
     
     if request.method == 'POST':
