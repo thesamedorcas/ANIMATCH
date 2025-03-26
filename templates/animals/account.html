@@ -3,23 +3,251 @@
 {% block title_block %}
 My Account
 {% endblock %}
-
 {% block body_block %}
+<div class="account-container">
     <h1>My Account</h1>
-    <div>
-        <h2>My Details</h2>
-        <p>Name: {{ user.username }}</p>
-        <p>Age: {{ user.profile.age }}</p>
-        <p>Location: {{ user.profile.location }}</p>
-        <p>Preference: {{ user.profile.preference }}</p>
-        <button>Edit</button>
+    <div class="account-sections">
+        <div class="user-details">
+            <h2>My Details</h2>
+            <div class="profile-info">
+                {% if user.userprofile.picture %}
+                    <img src="{{ user.userprofile.picture.url }}" alt="{{ user.username }}" class="profile-picture">
+                {% else %}
+                    <img src="{% static 'images/default-profile.jpg' %}" alt="{{ user.username }}" class="profile-picture">
+                {% endif %}
+                
+                <div class="profile-text">
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Website:</strong> 
+                        {% if user.userprofile.website %}
+                            <a href="{{ user.userprofile.website }}" target="_blank">{{ user.userprofile.website }}</a>
+                        {% else %}
+                            Not provided
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            <button id="edit-profile-button" class="btn btn-primary">Edit Profile</button>
+            
+            <div id="edit-profile-form" style="display: none;">
+                <h3>Edit Your Profile</h3>
+                <form method="post" action="{% url 'animals:edit_profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="website">Website:</label>
+                        <input type="url" id="website" name="website" value="{{ user.userprofile.website }}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="picture">Profile Picture:</label>
+                        <input type="file" id="picture" name="picture" class="form-control-file">
+                        {% if user.userprofile.picture %}
+                            <p class="mt-1">Current: {{ user.userprofile.picture.url }}</p>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <button type="button" id="cancel-profile-edit" class="btn btn-secondary">Cancel</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="favorites">
+            <h2>My Favorites</h2>
+            {% if favorites %}
+                <div class="animal-grid">
+                    {% for favorite in favorites %}
+                        <div class="animal-card">
+                            <div class="animal-image">
+                                {% if favorite.animal.picture %}
+                                    <img src="{{ favorite.animal.picture.url }}" alt="{{ favorite.animal.name }}">
+                                {% else %}
+                                    <img src="{% static 'images/default-animal.jpg' %}" alt="{{ favorite.animal.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="animal-info">
+                                <h3>{{ favorite.animal.name }}</h3>
+                                <p><strong>Species:</strong> {{ favorite.animal.species }}</p>
+                                <p><strong>Breed:</strong> {{ favorite.animal.breed }}</p>
+                                <p><strong>Status:</strong> {% if favorite.animal.adopted %}Adopted{% else %}Available{% endif %}</p>
+                                <a href="{% url 'animals:animal_profile' favorite.animal.id %}" class="btn btn-primary">View Details</a>
+                                <form method="post" action="{% url 'animals:remove_favorite' favorite.animal.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>You haven't saved any animals as favorites yet.</p>
+            {% endif %}
+        </div>
+        
+        <div class="my-animals">
+            <h2>My Animals</h2>
+            {% if my_animals %}
+                <div class="animal-grid">
+                    {% for animal in my_animals %}
+                        <div class="animal-card">
+                            <div class="animal-image">
+                                {% if animal.picture %}
+                                    <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+                                {% else %}
+                                    <img src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="animal-info">
+                                <h3>{{ animal.name }}</h3>
+                                <p><strong>Species:</strong> {{ animal.species }}</p>
+                                <p><strong>Breed:</strong> {{ animal.breed }}</p>
+                                <p><strong>Status:</strong> {% if animal.adopted %}Adopted{% else %}Available{% endif %}</p>
+                                <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-primary">Manage</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>You haven't listed any animals yet.</p>
+            {% endif %}
+            
+            <button id="add-animal-button" class="btn btn-success">List a New Animal</button>
+            
+            <div id="add-animal-form" style="display: none;">
+                <h3>List a New Animal</h3>
+                <form method="post" action="{% url 'animals:add_animal' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="species">Species:</label>
+                        <select id="species" name="species" class="form-control" required>
+                            {% for choice in species_choices %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="breed">Breed:</label>
+                        <input type="text" id="breed" name="breed" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" name="age" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">Sex:</label>
+                        <select id="sex" name="sex" class="form-control" required>
+                            {% for choice in sex_choices %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="about">About:</label>
+                        <textarea id="about" name="about" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="picture">Picture:</label>
+                        <input type="file" id="picture" name="picture" class="form-control-file">
+                    </div>
+                    <div class="form-group">
+                        <label for="sociable">Sociable:</label>
+                        <select id="sociable" name="sociable" class="form-control">
+                            <option value="True">Yes</option>
+                            <option value="False">No</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Animal</button>
+                    <button type="button" id="cancel-add-animal" class="btn btn-secondary">Cancel</button>
+                </form>
+            </div>
+        </div>
+        
+        {% if is_admin %}
+        <div class="adoption-requests">
+            <h2>Adoption Requests</h2>
+            {% if adoption_requests %}
+                <div class="request-list">
+                    {% for request in adoption_requests %}
+                        <div class="request-card">
+                            <div class="request-header">
+                                <h3>Request #{{ request.id }}</h3>
+                                <span class="request-date">{{ request.date_submitted|date:"F j, Y" }}</span>
+                            </div>
+                            <div class="request-details">
+                                <p><strong>User:</strong> {{ request.user.username }}</p>
+                                <p><strong>Animal:</strong> {{ request.animal.name }} (#{{ request.animal.id }})</p>
+                                <p><strong>Status:</strong> <span class="status-{{ request.status }}">{{ request.status|title }}</span></p>
+                                <div class="request-message">
+                                    <h4>Message:</h4>
+                                    <p>{{ request.message }}</p>
+                                </div>
+                                {% if request.contact_phone %}
+                                    <p><strong>Contact Phone:</strong> {{ request.contact_phone }}</p>
+                                {% endif %}
+                                
+                                {% if request.status == 'pending' %}
+                                    <div class="admin-actions">
+                                        <form method="post" action="{% url 'animals:process_adoption' request.id 'approved' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-success">Approve</button>
+                                        </form>
+                                        <form method="post" action="{% url 'animals:process_adoption' request.id 'rejected' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Reject</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>There are no adoption requests to review.</p>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
-    <div>
-        <h2>My Saved</h2>
-        <!-- user's saved animals -->
-    </div>
-    <div>
-        <h2>My Posts</h2>
-        <!-- user's posts -->
-    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Profile edit form 
+        const editProfileButton = document.getElementById('edit-profile-button');
+        const editProfileForm = document.getElementById('edit-profile-form');
+        const cancelProfileEdit = document.getElementById('cancel-profile-edit');
+        
+        editProfileButton.addEventListener('click', function() {
+            editProfileForm.style.display = 'block';
+            editProfileButton.style.display = 'none';
+        });
+        
+        cancelProfileEdit.addEventListener('click', function() {
+            editProfileForm.style.display = 'none';
+            editProfileButton.style.display = 'inline-block';
+        });
+        
+        // Add animal form toggle
+        const addAnimalButton = document.getElementById('add-animal-button');
+        const addAnimalForm = document.getElementById('add-animal-form');
+        const cancelAddAnimal = document.getElementById('cancel-add-animal');
+        
+        addAnimalButton.addEventListener('click', function() {
+            addAnimalForm.style.display = 'block';
+            addAnimalButton.style.display = 'none';
+        });
+        
+        cancelAddAnimal.addEventListener('click', function() {
+            addAnimalForm.style.display = 'none';
+            addAnimalButton.style.display = 'inline-block';
+        });
+    });
+</script>
 {% endblock %}
