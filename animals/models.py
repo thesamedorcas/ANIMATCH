@@ -40,8 +40,14 @@ class Animal(models.Model):
     slug = models.SlugField(unique=True)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(f"{self.name}-{self.id}")
-        super(Animal, self).save(*args, **kwargs)
+        #Fixing logic issue on database
+        if self.id:
+            super(Animal, self).save(*args, **kwargs)
+            self.slug = slugify(f"{self.name}-{self.id}")
+            super(Animal, self).save(update_fields=['slug'])
+        else:
+            self.slug = slugify(f"{self.name}-{self.id}")
+            super(Animal, self).save(*args, **kwargs)
     
     def __str__(self):
         return self.name
