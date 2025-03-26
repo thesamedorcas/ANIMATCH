@@ -59,26 +59,28 @@ My Account
         <div class="favorites">
             <h2>My Favorites</h2>
             {% if favorites %}
-                <div class="animal-grid">
+                <div class="animal-cards-container">
                     {% for favorite in favorites %}
                         <div class="animal-card">
-                            <div class="animal-image">
+                            <div class="animal-card-image">
                                 {% if favorite.animal.picture %}
-                                    <img class="account-fav-photo" src="{{ favorite.animal.picture.url }}" alt="{{ favorite.animal.name }}">
+                                    <img class="animal-card-photo" src="{{ favorite.animal.picture.url }}" alt="{{ favorite.animal.name }}">
                                 {% else %}
-                                    <img class="account-fav-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ favorite.animal.name }}">
+                                    <img class="animal-card-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ favorite.animal.name }}">
                                 {% endif %}
                             </div>
-                            <div class="animal-info">
+                            <div class="animal-card-info">
                                 <h3>{{ favorite.animal.name }}</h3>
                                 <p><strong>Species:</strong> {{ favorite.animal.species }}</p>
                                 <p><strong>Breed:</strong> {{ favorite.animal.breed }}</p>
                                 <p><strong>Status:</strong> {% if favorite.animal.adopted %}Adopted{% else %}Available{% endif %}</p>
-                                <a href="{% url 'animals:animal_profile' favorite.animal.id %}" class="btn btn-primary">View Details</a>
-                                <form method="post" action="{% url 'animals:remove_favorite' favorite.animal.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger">Remove</button>
-                                </form>
+                                <div class="animal-card-buttons">
+                                    <a href="{% url 'animals:animal_profile' favorite.animal.id %}" class="btn btn-danger">View Details</a>
+                                    <form method="post" action="{% url 'animals:remove_favorite' favorite.animal.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Remove</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -91,22 +93,24 @@ My Account
         <div class="my-animals">
             <h2>My Animals</h2>
             {% if my_animals %}
-                <div class="animal-grid">
+                <div class="animal-cards-container">
                     {% for animal in my_animals %}
                         <div class="animal-card">
-                            <div class="animal-image">
+                            <div class="animal-card-image">
                                 {% if animal.picture %}
-                                    <img class="animal-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+                                    <img class="animal-card-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
                                 {% else %}
-                                    <img class="animal-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
+                                    <img class="animal-card-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
                                 {% endif %}
                             </div>
-                            <div class="animal-info">
+                            <div class="animal-card-info">
                                 <h3>{{ animal.name }}</h3>
                                 <p><strong>Species:</strong> {{ animal.species }}</p>
                                 <p><strong>Breed:</strong> {{ animal.breed }}</p>
                                 <p><strong>Status:</strong> {% if animal.adopted %}Adopted{% else %}Available{% endif %}</p>
-                                <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-primary">Manage</a>
+                                <div class="animal-card-buttons">
+                                    <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-danger">Manage</a>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -124,45 +128,6 @@ My Account
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="species">Species:</label>
-                        <select id="species" name="species" class="form-control" required>
-                            {% for choice in species_choices %}
-                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="breed">Breed:</label>
-                        <input type="text" id="breed" name="breed" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="age">Age:</label>
-                        <input type="number" id="age" name="age" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="sex">Sex:</label>
-                        <select id="sex" name="sex" class="form-control" required>
-                            {% for choice in sex_choices %}
-                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="about">About:</label>
-                        <textarea id="about" name="about" class="form-control" rows="4" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="picture">Picture:</label>
-                        <input type="file" id="picture" name="picture" class="form-control-file">
-                    </div>
-                    <div class="form-group">
-                        <label for="sociable">Sociable:</label>
-                        <select id="sociable" name="sociable" class="form-control">
-                            <option value="True">Yes</option>
-                            <option value="False">No</option>
-                        </select>
                     </div>
                     <button type="submit" class="btn btn-success">Add Animal</button>
                     <button type="button" id="cancel-add-animal" class="btn btn-secondary">Cancel</button>
