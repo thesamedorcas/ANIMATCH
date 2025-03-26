@@ -9,7 +9,8 @@ import random
 from django.template.defaultfilters import slugify
 
 def populate():
-    Animal.objects.all().delete()
+    #commenting this out cos i think it's the problem
+   # Animal.objects.all().delete()
     #creating tests cos I'm lost so i'm using randomizers
 
     admin_user = User.objects.get_or_create(username='admin')[0]
