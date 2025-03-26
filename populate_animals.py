@@ -102,7 +102,7 @@ def add_animal(name, species, breed, age, sex, about, sociable=True, adopted=Fal
             'about': about,
             'sociable': sociable,
             'adopted': adopted,
-            'slug': slugify(name)  
+             
         }
     )
     
