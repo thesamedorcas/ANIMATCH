@@ -273,3 +273,54 @@ footer {
     max-width: 300px;
     height: auto;
 }
+
+/* Favorites Slider on Home Page */
+.favorites-slider {
+    margin: 20px 0;
+}
+
+.slider-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    gap: 10px;
+}
+
+.slider-item a{
+    text-decoration: none;
+    color: inherit;
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.slider-animal-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    display: block;
+    margin: 5px auto;
+    transition: transform 0.3s ease;
+}
+
+.slider-animal-photo:hover {
+    transform: scale(1.1);
+}
+
+.slider-animal-name {
+    text-decoration: none;
+    font-size: 1rem;         
+    color: #555;         
+    margin-top: 8px;        
+    text-align: center;     
+    font-weight: 600;        
+}
+
+.account-fav-photo {
+    width: 200px;     
+    height: 200px;    
+    object-fit: cover; 
+    border-radius: 4px;
+    display: block;
+    margin: 0 auto;
+}

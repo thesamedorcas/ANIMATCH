@@ -64,9 +64,9 @@ My Account
                         <div class="animal-card">
                             <div class="animal-image">
                                 {% if favorite.animal.picture %}
-                                    <img src="{{ favorite.animal.picture.url }}" alt="{{ favorite.animal.name }}">
+                                    <img class="account-fav-photo" src="{{ favorite.animal.picture.url }}" alt="{{ favorite.animal.name }}">
                                 {% else %}
-                                    <img src="{% static 'images/default-animal.jpg' %}" alt="{{ favorite.animal.name }}">
+                                    <img class="account-fav-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ favorite.animal.name }}">
                                 {% endif %}
                             </div>
                             <div class="animal-info">

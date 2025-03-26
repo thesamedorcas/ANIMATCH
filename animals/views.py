@@ -15,7 +15,12 @@ def home(request):
     context_dict['boldmessage'] = 'Welcome to ANIMATCH!'
     context_dict['animals'] = animal_list
     
-    
+    if request.user.is_authenticated:
+        favorites = Favorite.objects.filter(user=request.user)
+        context_dict['favorites'] = favorites
+    else:
+        context_dict['favorites'] = None
+
     visitor_cookie_handler(request)
     
     response = render(request, 'animals/home.html', context=context_dict)

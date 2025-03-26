@@ -20,4 +20,25 @@ Home
             <p>Please <a href="{% url 'animals:login' %}">login</a> or <a href="{% url 'animals:signup' %}">sign up</a> to start your adoption journey.</p>
         {% endif %}
     </div>
+
+    {% if user.is_authenticated and favorites %}
+    <div class="favorites-slider">
+        <h2>Your Favorites</h2>
+        <div class="slider-container">
+            {% for favorite in favorites %}
+              <div class="slider-item">
+                  <a href="{% url 'animals:animal_profile' favorite.animal.id %}">
+                      {% if favorite.animal.picture %}
+                         <img class="slider-animal-photo" src="{{ favorite.animal.picture.url }}" alt="{{ favorite.animal.name }}">
+                       {% else %}
+                            <img class="slider-animal-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ favorite.animal.name }}">
+                        {% endif %}
+                        <p class="slider-animal-name">{{ favorite.animal.name }}</p>
+                    </a>
+              </div>
+            
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
