@@ -10,6 +10,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+    
 
 class Animal(models.Model):
     SPECIES_CHOICES = [ #i wasn't sure what to put, so you can chnage this
@@ -44,3 +45,33 @@ class Animal(models.Model):
     
     def __str__(self):
         return self.name
+    
+#Working on Adoption requests and favourite
+class AdoptionRequest(models.Model):
+    STATUS_CHOICES= [
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Rejected', 'Rejected'),
+    ]
+    #I'm really trying ot use descriptive variables, let me know if you want me to change it
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='adoption_requests')
+    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='adoption_requests')
+    message = models.TextField()
+    contact_phone = models.CharField(max_length=20, blank=True)
+    date_submitted = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    admin_notes = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.animal.name} - {self.status}"
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
+    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='favorited_by')
+    date_added = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('user', 'animal')
+        
+    def __str__(self):
+        return f"{self.user.username} - {self.animal.name}"

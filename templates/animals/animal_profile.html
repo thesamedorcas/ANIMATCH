@@ -1,19 +1,22 @@
 {% extends 'animals/base.html' %}
 {% load static %}
 {% block title_block %}
-Animal Profile
+{{ animal.name }} - Animal Profile
 {% endblock %}
 
 {% block body_block %}
-    <h1>Animal Profile</h1>
-    <div>
+<div class = "animal-profile-container">
+    <h1>{{ animal.name }}</h1>
+    <div class="animal-profile">
+        <div animal-profile-image>
         {% if animal.picture %}
             <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
         {% else %}
             <img src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
         {% endif %}
+        </div>
 
-        
+    <div class="animal-profile-details">
         <p>Name: {{ animal.name }}</p>
         <p>Species: {{ animal.species }}</p>
         <p>Breed: {{ animal.breed }}</p>
@@ -21,35 +24,171 @@ Animal Profile
         <p>Sex: {{ animal.sex }}</p>
         <p>About: {{ animal.about }}</p>
         <p>Sociable: {% if animal.sociable %}Yes{% else %}No{% endif %}</p>
-        
-        {% if user == animal.owner %}
-            <!-- Owner view -->
-            <form method="post" action="{% url 'animals:edit_animal' animal.id %}">
-                {% csrf_token %}
-                <label for="species">Species:</label>
-                <input type="text" id="species" name="species" value="{{ animal.species }}" required><br>
-                <label for="breed">Breed:</label>
-                <input type="text" id="breed" name="breed" value="{{ animal.breed }}" required><br>
-                <label for="age">Age:</label>
-                <input type="number" id="age" name="age" value="{{ animal.age }}" required><br>
-                <label for="sex">Sex:</label>
-                <input type="text" id="sex" name="sex" value="{{ animal.sex }}" required><br>
-                <label for="about">About:</label>
-                <textarea id="about" name="about" required>{{ animal.about }}</textarea><br>
-                <button type="submit">Save Details</button>
-                <label for="sociable">Sociable:</label>
-                <select id="sociable" name="sociable">
-                    <option value="True" {% if animal.sociable %}selected{% endif %}>Yes</option>
-                    <option value="False" {% if not animal.sociable %}selected{% endif %}>No</option>
-                </select><br>
-                <button type="submit">Save Details</button>
-            </form>
+        <p><strong>Status:</strong> {% if animal.adopted %}Adopted{% else %}Available for adoption{% endif %}</p>
             
-        {% else %}
-            <!-- Non-owner view -->
-            {% if user.is_authenticated %}
-            <button>Adopt</button>
-            {% endif %}
+        <div class="animal-about">
+            <h3>About</h3>
+            <p>{{ animal.about }}</p>
+        </div>
+        
+        {% if user.is_authenticated %}
+            {% if not animal.adopted and user != animal.owner %}
+            <div class="action-buttons">
+                <button id="adopt-button" class="btn btn-primary">Request to Adopt</button>
+                
+                {% if is_favorite %}
+                    <form method="post" action="{% url 'animals:remove_favorite' animal.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Remove from Favorites</button>
+                    </form>
+                {% else %}
+                    <form method="post" action="{% url 'animals:add_favorite' animal.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Add to Favorites</button>
+                    </form>
+                {% endif %}
+            </div>
+            
+            <div id="adoption-form" class="adoption-form" style="display: none;">
+                <h3>Adoption Request</h3>
+                <form method="post" action="{% url 'animals:request_adoption' animal.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_message">Why do you want to adopt {{ animal.name }}?</label>
+                        <textarea name="message" id="id_message" class="form-control" rows="4" required></textarea>
+                        <small class="form-text text-muted">Please tell us why you would like to adopt this animal and your experience with pets.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_contact_phone">Contact Phone (Optional)</label>
+                        <input type="text" name="contact_phone" id="id_contact_phone" class="form-control">
+                        <small class="form-text text-muted">Provide a phone number where we can reach you.</small>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit Request</button>
+                    <button type="button" id="cancel-adoption" class="btn btn-secondary">Cancel</button>
+                </form>
+            </div>
         {% endif %}
+        {% if user == animal.owner %}
+        div class="owner-actions">
+                        <h3>Owner Actions</h3>
+                        <button id="edit-button" class="btn btn-primary">Edit Details</button>
+                        
+                        {% if not animal.adopted %}
+                            <form method="post" action="{% url 'animals:mark_adopted' animal.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">Mark as Adopted</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{% url 'animals:mark_available' animal.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning">Mark as Available</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    
+                    <div id="edit-form" class="edit-form" style="display: none;">
+                        <h3>Edit {{ animal.name }}'s Details</h3>
+                        <form method="post" action="{% url 'animals:edit_animal' animal.id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name" value="{{ animal.name }}" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="species">Species:</label>
+                                <select id="species" name="species" class="form-control" required>
+                                    {% for choice in species_choices %}
+                                        <option value="{{ choice.0 }}" {% if animal.species == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="breed">Breed:</label>
+                                <input type="text" id="breed" name="breed" value="{{ animal.breed }}" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Age:</label>
+                                <input type="number" id="age" name="age" value="{{ animal.age }}" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="sex">Sex:</label>
+                                <select id="sex" name="sex" class="form-control" required>
+                                    {% for choice in sex_choices %}
+                                        <option value="{{ choice.0 }}" {% if animal.sex == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="about">About:</label>
+                                <textarea id="about" name="about" class="form-control" rows="4" required>{{ animal.about }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="picture">Picture:</label>
+                                <input type="file" id="picture" name="picture" class="form-control-file">
+                                {% if animal.picture %}
+                                    <p class="mt-1">Current: {{ animal.picture.url }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="sociable">Sociable:</label>
+                                <select id="sociable" name="sociable" class="form-control">
+                                    <option value="True" {% if animal.sociable %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not animal.sociable %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                            <button type="button" id="cancel-edit" class="btn btn-secondary">Cancel</button>
+                        </form>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p class="login-prompt">Please <a href="{% url 'animals:login' %}">login</a> to request adoption or save to favorites.</p>
+            {% endif %}
+        </div>
     </div>
+</div>
+
+<script>
+    // JavaScript (I'm not a fan of this language but sure)
+    document.addEventListener('DOMContentLoaded', function() {
+    
+        const adoptButton = document.getElementById('adopt-button');
+        const adoptionForm = document.getElementById('adoption-form');
+        const cancelAdoption = document.getElementById('cancel-adoption');
+        
+        if (adoptButton) {
+            adoptButton.addEventListener('click', function() {
+                adoptionForm.style.display = 'block';
+                adoptButton.style.display = 'none';
+            });
+        }
+        
+        if (cancelAdoption) {
+            cancelAdoption.addEventListener('click', function() {
+                adoptionForm.style.display = 'none';
+                adoptButton.style.display = 'inline-block';
+            });
+        }
+        
+        // Edit form 
+        const editButton = document.getElementById('edit-button');
+        const editForm = document.getElementById('edit-form');
+        const cancelEdit = document.getElementById('cancel-edit');
+        
+        if (editButton) {
+            editButton.addEventListener('click', function() {
+                editForm.style.display = 'block';
+                editButton.style.display = 'none';
+            });
+        }
+        
+        if (cancelEdit) {
+            cancelEdit.addEventListener('click', function() {
+                editForm.style.display = 'none';
+                editButton.style.display = 'inline-block';
+            });
+        }
+    });
+</script>
+
 {% endblock %}

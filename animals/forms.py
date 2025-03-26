@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from animals.models import UserProfile, Animal
+from animals.models import UserProfile, Animal, AdoptionRequest, Favorite
 
 class AnimalForm(forms.ModelForm):
     name = forms.CharField(max_length=128, help_text="Please enter the animal's name.")
@@ -29,3 +29,28 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+class AdoptionRequestForm(forms.ModelForm):
+    message = forms.CharField(
+        widget=forms.Textarea, 
+        help_text="Please tell us why you would like to adopt this animal and your experience with pets."
+    )
+    contact_phone = forms.CharField(
+        max_length=20, 
+        required=False,
+        help_text="Optional: Provide a phone number where we can reach you."
+    )
+    
+    class Meta:
+        model = AdoptionRequest
+        fields = ('message', 'contact_phone')
+
+class UserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('website', 'picture')
+
+class FavoriteForm(forms.ModelForm):
+    class Meta:
+        model = Favorite
+        fields = [] #I don't think fields are needed, because I just need animal and user IDs
