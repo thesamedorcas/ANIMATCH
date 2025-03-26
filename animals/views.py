@@ -275,6 +275,8 @@ def add_animal(request):
                 animal.picture = request.FILES['picture']
             
             animal.save()
+            #my peronal test for ids and names
+            print(f"Animal added: {animal.name} (ID: {animal.id})")
             messages.success(request, f"Animal '{animal.name}' added successfully!")
             return redirect('animals:animal_profile', animal_id=animal.id)
         except Exception as e:

@@ -41,13 +41,10 @@ class Animal(models.Model):
     
     def save(self, *args, **kwargs):
         #Fixing logic issue on database
-        if self.id:
-            super(Animal, self).save(*args, **kwargs)
+        super(Animal, self).save(*args, **kwargs)
+        if not self.slug or self.slug.endswith('-None'):
             self.slug = slugify(f"{self.name}-{self.id}")
             super(Animal, self).save(update_fields=['slug'])
-        else:
-            self.slug = slugify(f"{self.name}-{self.id}")
-            super(Animal, self).save(*args, **kwargs)
     
     def __str__(self):
         return self.name
