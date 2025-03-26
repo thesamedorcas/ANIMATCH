@@ -8,11 +8,11 @@
 <div class = "animal-profile-container">
     <h1>{{ animal.name }}</h1>
     <div class="animal-profile">
-        <div animal-profile-image>
+        <div class="animal-profile-image">
         {% if animal.picture %}
-            <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+            <img class="animal-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
         {% else %}
-            <img src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
+            <img class="animal-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
         {% endif %}
         </div>
 
@@ -92,6 +92,13 @@
         <div class="owner-actions">
                         <h3>Owner Actions</h3>
                         <button id="edit-button" class="btn btn-primary">Edit Details</button>
+
+                        {% if animal.picture %}
+                            <form method="post" action="{% url 'animals:remove_photo' animal.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Remove Photo</button>
+                            </form>
+                        {% endif %}
                         
                         {% if not animal.adopted %}
                             <form method="post" action="{% url 'animals:mark_adopted' animal.id %}">

@@ -34,6 +34,7 @@ urlpatterns = [
     path('animal/<int:animal_id>/unfavorite/', views.remove_favorite, name='remove_favorite'),
     path('animal/<int:animal_id>/mark-adopted/', views.mark_adopted, name='mark_adopted'),
     path('animal/<int:animal_id>/mark-available/', views.mark_available, name='mark_available'),
+    path('animals/<int:animal_id>/remove_photo/', views.remove_animal_photo, name='remove_photo'),
 
     # Admin
     path('adoption-request/<int:request_id>/<str:status>/', views.process_adoption, name='process_adoption'),

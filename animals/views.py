@@ -295,6 +295,24 @@ def add_animal(request):
             return redirect('animals:account')
     return redirect('animals:account')
 
+
+@login_required
+def remove_animal_photo(request, animal_id):
+    animal = get_object_or_404(Animal, id=animal_id)
+    
+    if request.user != animal.owner:
+        return redirect('animals:animal_profile', animal_id=animal.id)
+    
+    if request.method == 'POST':
+        if animal.picture:
+            animal.picture.delete(save=False)
+        animal.picture = None
+        animal.save()
+    
+    return redirect('animals:animal_profile', animal_id=animal.id)
+
+
+
 def about(request):
     context_dict = {}
     visitor_cookie_handler(request)

@@ -267,3 +267,9 @@ footer {
 .auth-switch a:hover {
     text-decoration: underline;
 }
+
+/* Animal Photo Resizing */
+.animal-photo {
+    max-width: 300px;
+    height: auto;
+}
