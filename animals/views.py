@@ -260,22 +260,28 @@ def edit_profile(request):
 @login_required
 def add_animal(request):
     if request.method == 'POST':
-        animal = Animal()
-        animal.name = request.POST.get('name')
-        animal.species = request.POST.get('species')
-        animal.breed = request.POST.get('breed')
-        animal.age = request.POST.get('age')
-        animal.sex = request.POST.get('sex')
-        animal.about = request.POST.get('about')
-        animal.sociable = request.POST.get('sociable') == 'True'
-        animal.owner = request.user
+        try:
+            animal = Animal()
+            animal.name = request.POST.get('name')
+            animal.species = request.POST.get('species')
+            animal.breed = request.POST.get('breed')
+            animal.age = request.POST.get('age')
+            animal.sex = request.POST.get('sex')
+            animal.about = request.POST.get('about')
+            animal.sociable = request.POST.get('sociable') == 'True'
+            animal.owner = request.user
 
-        if 'picture' in request.FILES:
-            animal.picture = request.FILES['picture']
-        animal.save()   
-        messages.success(request, f"generic animal added message")
-        return redirect('animals:animal_profile', animal_id=animal.id)  
+            if 'picture' in request.FILES:
+                animal.picture = request.FILES['picture']
+            
+            animal.save()
+            messages.success(request, f"Animal '{animal.name}' added successfully!")
+            return redirect('animals:animal_profile', animal_id=animal.id)
+        except Exception as e:
+            messages.error(request, f"Error adding animal: {e}")
+            return redirect('animals:account')
     return redirect('animals:account')
+
 def about(request):
     context_dict = {}
     visitor_cookie_handler(request)

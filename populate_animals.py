@@ -91,7 +91,16 @@ def populate():
         print(f"- {a.name}: {a.species}, {a.breed}, {'Adopted' if a.adopted else 'Available'}")
 
 def add_animal(name, species, breed, age, sex, about, sociable=True, adopted=False):
-   
+
+    # Generate slug
+    base_slug = slugify(name)
+    slug = base_slug
+    counter = 1
+
+    while Animal.objects.filter(slug=slug).exists():
+        slug = f"{base_slug}-{counter}"
+        counter += 1
+
     a, created = Animal.objects.get_or_create(
         name=name,
         defaults={
@@ -102,7 +111,7 @@ def add_animal(name, species, breed, age, sex, about, sociable=True, adopted=Fal
             'about': about,
             'sociable': sociable,
             'adopted': adopted,
-             
+            'slug': slug 
         }
     )
     
@@ -115,6 +124,7 @@ def add_animal(name, species, breed, age, sex, about, sociable=True, adopted=Fal
         a.about = about
         a.sociable = sociable
         a.adopted = adopted
+        a.slug = slug
         a.save()
         
     return a
