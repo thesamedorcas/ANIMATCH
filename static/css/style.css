@@ -15,7 +15,7 @@ body {
 
 /* Header Styles */
 header {
-    background: #228B22; 
+    background: #228B22;
     border-bottom: 1px solid #ccc;
     padding: 10px 0;
 }
@@ -77,7 +77,7 @@ header {
 
 /* Footer Styles */
 footer {
-    background: #228B22; 
+    background: #228B22;
     border-top: 1px solid #ccc;
     padding: 10px 0;
     text-align: center;
@@ -189,7 +189,7 @@ footer {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .about-container h2 {
@@ -209,7 +209,7 @@ footer {
     background: #fff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .auth-container h1 {
@@ -266,6 +266,7 @@ footer {
 
 .auth-switch a:hover {
     text-decoration: underline;
+
 }
 
 /* Animal Photo Resizing */
@@ -328,10 +329,11 @@ footer {
 /* Individual animal card */
 .animal-card {
     display: flex;
+    flex: 0 1 calc(50% - 15px);
     background: #fff;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 600px;
     margin: 0;
@@ -339,8 +341,12 @@ footer {
 
 /* Image container for animal cards */
 .animal-card-image {
-    flex: 0 0 200px;
-    margin-right: 15px;
+    flex: 1 0 200px;
+    padding-right: 15px;
+}
+
+.animal-info {
+    flex: 1 0 200px;
 }
 
 /* Uniform animal card photo */
@@ -354,7 +360,7 @@ footer {
 
 /* Info section for animal cards */
 .animal-card-info {
-    flex: 1;
+    flex: 1 0 200px;
 }
 
 .animal-card-info h3 {
@@ -375,13 +381,13 @@ footer {
     margin-top: 15px;
 }
 
-a.btn.btn-primary {
+/* a.btn.btn-primary {
     width: 150px !important;
     padding: 10px 20px !important;
     font-size: 1em !important;
     text-align: center;
     display: inline-block;
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 
 a.btn.btn-danger {
@@ -394,7 +400,7 @@ a.btn.btn-danger {
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
-}
+} */
 
 .account-fav-photo {
     width: 200px;
@@ -411,6 +417,7 @@ a.btn.btn-danger {
     object-fit: cover;
     border-radius: 50%;
     display: block;
+
 }
 /* Message */
 .messages {
@@ -464,4 +471,5 @@ a.btn.btn-danger {
 
 .close-message:hover {
     opacity: 1;
+
 }
