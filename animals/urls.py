@@ -40,6 +40,7 @@ urlpatterns = [
 
     #delte/romve button
     path('adoption-request/<int:request_id>/<str:status>/', views.process_adoption, name='process_adoption'),
+    path('animal/<int:animal_id>/delete/', views.delete_animal, name='delete_animal'),
     
    
 ]
