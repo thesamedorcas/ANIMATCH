@@ -8,7 +8,6 @@ Animals for adoption
     <h1>Animals available for adoption</h1>
     <div class="action-buttons">
         <a href="{% url 'animals:recommended' %}" class="btn btn-danger">View Recommended Animals</a>
-        <button id="toggle-filters" class="btn btn-primary">Show/Hide Filters</button>
     </div>
     <div class = "filter-section">  
         <button id="toggle-filters" class="btn btn-primary">Show/Hide Filters</button>
@@ -65,7 +64,7 @@ Animals for adoption
                 
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Apply Filters</button>
-                    <a href="{% url 'animals:animals' %}" class="btn btn-secondary">Clear Filters</a>
+                    <a href="{% url 'animals:animals' %}" class="btn btn-danger">Clear Filters</a>
                 </div>
             </form>
         </div>
