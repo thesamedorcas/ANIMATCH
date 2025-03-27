@@ -68,9 +68,9 @@ class AdoptionRequest(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.animal.name} - {self.status}"
 
-class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
-    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='favorited_by')
+class Favourite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favourites')
+    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='favourited_by')
     date_added = models.DateTimeField(auto_now_add=True)
     
     class Meta:

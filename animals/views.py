@@ -4,10 +4,10 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from animals.models import Animal, Favorite, UserProfile, AdoptionRequest, Favorite
+from animals.models import Animal, Favourite, UserProfile, AdoptionRequest, Favourite
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from animals.forms import UserForm, UserProfileForm, SignUpForm, AdoptionRequest, UserProfileEditForm, FavoriteForm, AdoptionRequestForm
+from animals.forms import UserForm, UserProfileForm, SignUpForm, AdoptionRequest, UserProfileEditForm, FavouriteForm, AdoptionRequestForm
 
 def home(request):
     animal_list = Animal.objects.filter(adopted=False)[:5]
@@ -69,14 +69,14 @@ def animals(request):
 
 @login_required
 def recommended(request):
-    user_favorites = Favorite.objects.filter(user=request.user)
-    if user_favorites.exists():
-        favorite_species = [fav.animal.species for fav in user_favorites]
+    user_favourites = Favourite.objects.filter(user=request.user)
+    if user_favourites.exists():
+        favourite_species = [fav.animal.species for fav in user_favourites]
         recommended_animals = Animal.objects.filter(
-            species__in=favorite_species,
+            species__in=favourite_species,
             adopted=False
         ).exclude(
-            id__in=[fav.animal.id for fav in user_favorites]
+            id__in=[fav.animal.id for fav in user_favourites]
         )[:10]
     else:
         recommended_animals = Animal.objects.filter(adopted=False).order_by('?')[:10]
@@ -126,7 +126,7 @@ def login_view(request):
 
 @login_required
 def account(request):
-    favorites = Favorite.objects.filter(user=request.user)
+    favourites = Favourite.objects.filter(user=request.user)
     my_animals = Animal.objects.filter(owner=request.user)
     adoption_requests = AdoptionRequest.objects.filter(
         animal__owner=request.user
@@ -139,7 +139,7 @@ def account(request):
     
     context_dict = {
 
-        'favorites': favorites,
+        'favourites': favourites,
         'my_animals': my_animals,
         'is_admin': is_admin,
         'user_adoption_requests': user_adoption_requests,
@@ -157,14 +157,14 @@ def animal_profile(request, animal_id):
     try:
         animal = Animal.objects.get(id=animal_id)
 
-        is_favorite = False
+        is_favourite = False
         if request.user.is_authenticated:
-            is_favorite = Favorite.objects.filter(user=request.user, animal=animal).exists()
+            is_favourite = Favourite.objects.filter(user=request.user, animal=animal).exists()
 
 
         context_dict = {
             'animal': animal,
-            'is_favorite': is_favorite,
+            'is_favourite': is_favourite,
             'species_choices': Animal.SPECIES_CHOICES,
             'sex_choices': Animal.SEX_CHOICES,
         }
@@ -227,24 +227,24 @@ def request_adoption(request, animal_id):
 
     
 @login_required
-def add_favorite(request, animal_id):
+def add_favourite(request, animal_id):
     animal = get_object_or_404(Animal, id=animal_id)
-    favorite, created = Favorite.objects.get_or_create(user=request.user, animal=animal)  
+    favourite, created = Favourite.objects.get_or_create(user=request.user, animal=animal)  
     if created:
-        messages.success(request, f"{animal.name} has been added to your favourtites!")
+        messages.success(request, f"{animal.name} has been added to your favourites!")
     else:
-        messages.info(request, f"{animal.name} is already in your favorites.")
+        messages.info(request, f"{animal.name} is already in your favourites.")
     return redirect('animals:animal_profile', animal_id=animal_id)
 
 @login_required
-def remove_favorite(request, animal_id):
+def remove_favourite(request, animal_id):
     animal = get_object_or_404(Animal, id=animal_id)    
     try:
-        favorite = Favorite.objects.get(user=request.user, animal=animal)
-        favorite.delete()
-        messages.success(request, f"generic i removed animal from favourates message")
-    except Favorite.DoesNotExist:
-        messages.error(request, f"generic animmal not in favourites message")
+        favourite = Favourite.objects.get(user=request.user, animal=animal)
+        favourite.delete()
+        messages.success(request, f"{animal.name} has been removed from your favourites.")
+    except Favourite.DoesNotExist:
+        messages.error(request, f"{animal.name} is not in your favourites.")
 
     if request.META.get('HTTP_REFERER') and 'account' in request.META.get('HTTP_REFERER'):
         return redirect('animals:account')

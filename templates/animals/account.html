@@ -56,26 +56,26 @@ My Account
             </div>
         </div>
         
-        <div class="favorites">
-            <h2>My Favorites</h2>
-            {% if favorites %}
+        <div class="favourites">
+            <h2>My Favourites</h2>
+            {% if favourites %}
                 <div class="animal-grid">
-                    {% for favorite in favorites %}
+                    {% for favourite in favourites %}
                         <div class="animal-card">
                             <div class="animal-image">
-                                {% if favorite.animal.picture %}
-                                    <img src="{{ favorite.animal.picture.url }}" alt="{{ favorite.animal.name }}">
+                                {% if favourite.animal.picture %}
+                                    <img src="{{ favourite.animal.picture.url }}" alt="{{ favourite.animal.name }}">
                                 {% else %}
-                                    <img src="{% static 'images/default-animal.jpg' %}" alt="{{ favorite.animal.name }}">
+                                    <img src="{% static 'images/default-animal.jpg' %}" alt="{{ favourite.animal.name }}">
                                 {% endif %}
                             </div>
                             <div class="animal-info">
-                                <h3>{{ favorite.animal.name }}</h3>
-                                <p><strong>Species:</strong> {{ favorite.animal.species }}</p>
-                                <p><strong>Breed:</strong> {{ favorite.animal.breed }}</p>
-                                <p><strong>Status:</strong> {% if favorite.animal.adopted %}Adopted{% else %}Available{% endif %}</p>
-                                <a href="{% url 'animals:animal_profile' favorite.animal.id %}" class="btn btn-primary">View Details</a>
-                                <form method="post" action="{% url 'animals:remove_favorite' favorite.animal.id %}">
+                                <h3>{{ favourite.animal.name }}</h3>
+                                <p><strong>Species:</strong> {{ favourite.animal.species }}</p>
+                                <p><strong>Breed:</strong> {{ favourite.animal.breed }}</p>
+                                <p><strong>Status:</strong> {% if favourite.animal.adopted %}Adopted{% else %}Available{% endif %}</p>
+                                <a href="{% url 'animals:animal_profile' favourite.animal.id %}" class="btn btn-primary">View Details</a>
+                                <form method="post" action="{% url 'animals:remove_favourite' favourite.animal.id %}">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger">Remove</button>
                                 </form>
@@ -84,7 +84,7 @@ My Account
                     {% endfor %}
                 </div>
             {% else %}
-                <p>You haven't saved any animals as favorites yet.</p>
+                <p>You haven't saved any animals as favourites yet.</p>
             {% endif %}
         </div>
         
