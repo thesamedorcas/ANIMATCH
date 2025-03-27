@@ -33,23 +33,34 @@ My Account
             
             <div id="edit-profile-form" style="display: none;">
                 <h3>Edit Your Profile</h3>
-                <form method="post" action="{% url 'animals:edit_profile' %}" enctype="multipart/form-data">
+                <form method="post" action="{% url 'animals:edit_profile' %}" enctype="multipart/form-data" style="container">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label for="email">Email:</label>
+
+                    
+                    <div class="form-group row mb-4">
+                        <label for="email" class="col-sm-2 col-form-label">Email:</label>
+                        <div class="col-sm-4">
                         <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="website">Website:</label>
+                    <div class="form-group row mb-4">
+                        <label for="website" class="col-sm-2 col-form-label">Website:</label>
+                        <div class="col-sm-4">
                         <input type="url" id="website" name="website" value="{{ user.userprofile.website }}" class="form-control">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="picture">Profile Picture:</label>
-                        <input type="file" id="picture" name="picture" class="form-control-file">
+
+                    <div class="form-group row mb-4">
+                        <label for="picture" class="col-sm-2 col-form-label">Profile Picture:</label>
+                        <div class="col-sm-4">
+                        <input type="file" id="picture" name="picture" class="form-control">
+                        </div>
                         {% if user.userprofile.picture %}
-                            <p class="mt-1">Current: {{ user.userprofile.picture.url }}</p>
-                        {% endif %}
+                        <p class="mt-1 col-sm-4">Current: {{ user.userprofile.picture.url }}</p>
+                    {% endif %}
                     </div>
+
+
                     <button type="submit" class="btn btn-success">Save Changes</button>
                     <button type="button" id="cancel-profile-edit" class="btn btn-secondary">Cancel</button>
                 </form>
@@ -144,48 +155,65 @@ My Account
                 <h3>List a New Animal</h3>
                 <form method="post" action="{% url 'animals:add_animal' %}" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label for="name">Name:</label>
+                    <div class="form-group row mb-4">
+                        <label for="name" class="col-sm-2 col-form-label">Name:</label>
+                        <div class="col-sm-4">
                         <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="species">Species:</label>
-                        <select id="species" name="species" class="form-control" required>
+                    <div class="form-group row mb-4">
+                        <label for="species" class="col-sm-2 col-form-label">Species:</label>
+                        <div class="col-sm-4">
+                        <select id="species" name="species" class="form-select" required>
                             {% for choice in species_choices %}
                                 <option value="{{ choice.0 }}">{{ choice.1 }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="breed">Breed:</label>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="breed" class="col-sm-2 col-form-label">Breed:</label>
+                        <div class="col-sm-4">
                         <input type="text" id="breed" name="breed" class="form-control" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="age">Age:</label>
-                        <input type="number" id="age" name="age" class="form-control" required>
+                    <div class="form-group row mb-4">
+                        <label for="age" class="col-sm-2 col-form-label">Age:</label>
+                        <div class="col-sm-4">
+                        <input min="0" type="number" id="age" name="age" class="form-control" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="sex">Sex:</label>
-                        <select id="sex" name="sex" class="form-control" required>
+                    <div class="form-group row mb-4">
+                        <label for="sex" class="col-sm-2 col-form-label">Sex:</label>
+                        <div class="col-sm-4">
+                        <select id="sex" name="sex" class="form-select" required>
                             {% for choice in sex_choices %}
                                 <option value="{{ choice.0 }}">{{ choice.1 }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="about">About:</label>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="about" class="col-sm-2 col-form-label">About:</label>
+                        <div class="col-sm-4">
                         <textarea id="about" name="about" class="form-control" rows="4" required></textarea>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="picture">Picture:</label>
-                        <input type="file" id="picture" name="picture" class="form-control-file">
+                    <div class="form-group row mb-4">
+                        <label for="picture" class="col-sm-2 col-form-label">Picture:</label>
+                        <div class="col-sm-4">
+                        <input type="file" id="picture" name="picture" class="form-control">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="sociable">Sociable:</label>
-                        <select id="sociable" name="sociable" class="form-control">
+
+                    <div class="form-group row mb-4">
+                        <label for="sociable" class="col-sm-2 col-form-label">Sociable:</label>
+                        <div class="col-sm-4">
+                        <select id="sociable" name="sociable" class="form-select">
                             <option value="True">Yes</option>
                             <option value="False">No</option>
                         </select>
+                    </div>
                     </div>
                     <button type="submit" class="btn btn-success">Add Animal</button>
                     <button type="button" id="cancel-add-animal" class="btn btn-secondary">Cancel</button>
