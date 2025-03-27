@@ -329,10 +329,11 @@ footer {
 /* Individual animal card */
 .animal-card {
     display: flex;
+    flex: 1 1 30%;
     background: #fff;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 600px;
     margin: 0;
@@ -341,7 +342,7 @@ footer {
 /* Image container for animal cards */
 .animal-card-image {
     flex: 0 0 200px;
-    margin-right: 15px;
+    padding-right: 15px;
 }
 
 /* Uniform animal card photo */
@@ -376,13 +377,13 @@ footer {
     margin-top: 15px;
 }
 
-a.btn.btn-primary {
+/* a.btn.btn-primary {
     width: 150px !important;
     padding: 10px 20px !important;
     font-size: 1em !important;
     text-align: center;
     display: inline-block;
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 
 a.btn.btn-danger {
@@ -395,7 +396,7 @@ a.btn.btn-danger {
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
-}
+} */
 
 .account-fav-photo {
     width: 200px;
