@@ -147,7 +147,7 @@ My Account
                                 <p><strong>Breed:</strong> {{ animal.breed }}</p>
                                 <p><strong>Status:</strong> {% if animal.adopted %}Adopted{% else %}Available{% endif %}</p>
                                 <div class="animal-card-buttons">
-                                    <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-danger">Manage</a>
+                                    <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-primary">Manage</a>
                                 </div>
                             </div>
                         </div>
@@ -161,7 +161,7 @@ My Account
             <button id="add-animal-button" class="btn btn-success mb-2">List a New Animal</button>
 
 
-            <div id="add-animal-form" style="display: none;" class="container border mb-2">
+            <div id="add-animal-form" style="display: none;" class="container border m-2">
                 <h3>List a New Animal</h3>
                 <form method="post" action="{% url 'animals:add_animal' %}" enctype="multipart/form-data">
                     {% csrf_token %}

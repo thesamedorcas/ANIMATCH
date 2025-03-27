@@ -15,50 +15,62 @@ Animals for adoption
             <h3>Filter Animals</h3>
             <form method="get" action="{% url 'animals:animals' %}">
                 <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="species">Species:</label>
-                        <select id="species" name="species" class="form-control">
+                    <div class="form-group row col-md-4 mb-4">
+                        <label for="species" class="col-sm-2 col-form-label">Species:</label>
+                        <div class="col-sm-4">
+                        <select id="species" name="species" class="form-select">
                             <option value="">Any</option>
                             {% for choice in species_choices %}
                                 <option value="{{ choice.0 }}" {% if request.GET.species == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    
-                    <div class="form-group col-md-3">
-                        <label for="breed">Breed:</label>
-                        <input type="text" id="breed" name="breed" value="{{ request.GET.breed }}" class="form-control" placeholder="Any breed">
                     </div>
                     
-                    <div class="form-group col-md-3">
-                        <label for="sex">Sex:</label>
-                        <select id="sex" name="sex" class="form-control">
+                    <div class="form-group row col-md-4 mb-4">
+                        <label for="breed" class="col-sm-2 col-form-label">Breed:</label>
+                        <div class="col-sm-4">
+                        <input type="text" id="breed" name="breed" value="{{ request.GET.breed }}" class="form-control" placeholder="Any breed">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row col-md-4 mb-4">
+                        <label for="sex" class="col-sm-2 col-form-label">Sex:</label>
+                        <div class="col-sm-4">
+                        <select id="sex" name="sex" class="form-select">
                             <option value="">Any</option>
                             {% for choice in sex_choices %}
                                 <option value="{{ choice.0 }}" {% if request.GET.sex == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
                             {% endfor %}
                         </select>
                     </div>
+                    </div>
                     
-                    <div class="form-group col-md-3">
-                        <label for="sociable">Sociable:</label>
-                        <select id="sociable" name="sociable" class="form-control">
+                    <div class="form-group col-md-4 row mb-4">
+                        <label for="sociable" class="col-sm-2 col-form-label">Sociable:</label>
+                        <div class="col-sm-4">
+                        <select id="sociable" name="sociable" class="form-select">
                             <option value="">Any</option>
                             <option value="True" {% if request.GET.sociable == 'True' %}selected{% endif %}>Yes</option>
                             <option value="False" {% if request.GET.sociable == 'False' %}selected{% endif %}>No</option>
                         </select>
                     </div>
+                    </div>
                 </div>
                 
                 <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="age_min">Min Age:</label>
+                    <div class="form-group row col-md-6 mb-4">
+                        <label for="age_min" class="col-sm-2 col-form-label">Min Age:</label>
+                        <div class="col-sm-4">
                         <input type="number" id="age_min" name="age_min" value="{{ request.GET.age_min }}" class="form-control" min="0">
+                        </div>
                     </div>
                     
-                    <div class="form-group col-md-6">
-                        <label for="age_max">Max Age:</label>
+                    <div class="form-group row col-md-6 mb-4">
+                        <label for="age_max" class="col-sm-2 col-form-label">Max Age:</label>
+                        <div class="col-sm-4">
                         <input type="number" id="age_max" name="age_max" value="{{ request.GET.age_max }}" class="form-control" min="0">
+                        </div>
                     </div>
                 </div>
                 
