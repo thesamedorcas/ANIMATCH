@@ -74,15 +74,15 @@
                 </form>
             </div>
         {% endif %}                
-                {% if is_favorite %}
-                    <form method="post" action="{% url 'animals:remove_favorite' animal.id %}">
+                {% if is_favourite %}
+                    <form method="post" action="{% url 'animals:remove_favourite' animal.id %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary">Remove from Favorites</button>
+                        <button type="submit" class="btn btn-secondary">Remove from Favourites</button>
                     </form>
                 {% else %}
-                    <form method="post" action="{% url 'animals:add_favorite' animal.id %}">
+                    <form method="post" action="{% url 'animals:add_favourite' animal.id %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary">Add to Favorites</button>
+                        <button type="submit" class="btn btn-secondary">Add to Favourites</button>
                     </form>
                 {% endif %}
             </div>
@@ -169,7 +169,7 @@
                     </div>
                 {% endif %}
             {% else %}
-                <p class="login-prompt">Please <a href="{% url 'animals:login' %}">login</a> to request adoption or save to favorites.</p>
+                <p class="login-prompt">Please <a href="{% url 'animals:login' %}">login</a> to request adoption or save to favourites.</p>
             {% endif %}
         </div>
     </div>

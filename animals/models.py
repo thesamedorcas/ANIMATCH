@@ -62,15 +62,15 @@ class AdoptionRequest(models.Model):
     message = models.TextField()
     contact_phone = models.CharField(max_length=20, blank=True)
     date_submitted = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
     admin_notes = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.animal.name} - {self.status}"
 
-class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
-    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='favorited_by')
+class Favourite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favourites')
+    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='favourited_by')
     date_added = models.DateTimeField(auto_now_add=True)
     
     class Meta:

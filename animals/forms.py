@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from animals.models import UserProfile, Animal, AdoptionRequest, Favorite
+from animals.models import UserProfile, Animal, AdoptionRequest, Favourite
 
 class AnimalForm(forms.ModelForm):
     name = forms.CharField(max_length=128, help_text="Please enter the animal's name.")
@@ -50,7 +50,7 @@ class UserProfileEditForm(forms.ModelForm):
         model = UserProfile
         fields = ('website', 'picture')
 
-class FavoriteForm(forms.ModelForm):
+class FavouriteForm(forms.ModelForm):
     class Meta:
-        model = Favorite
+        model = Favourite
         fields = [] #I don't think fields are needed, because I just need animal and user IDs

@@ -17,19 +17,19 @@ Home
         {% endif %}
     </div>
 
-    {% if user.is_authenticated and favorites %}
-    <div class="favorites-slider">
-        <h2>Your Favorites</h2>
+    {% if user.is_authenticated and favourites %}
+    <div class="favourites-slider">
+        <h2>Your Favourites</h2>
         <div class="slider-container">
-            {% for favorite in favorites %}
+            {% for favourite in favourites %}
               <div class="slider-item">
-                  <a href="{% url 'animals:animal_profile' favorite.animal.id %}">
-                      {% if favorite.animal.picture %}
-                         <img class="slider-animal-photo" src="{{ favorite.animal.picture.url }}" alt="{{ favorite.animal.name }}">
+                  <a href="{% url 'animals:animal_profile' favourite.animal.id %}">
+                      {% if favourite.animal.picture %}
+                         <img class="slider-animal-photo" src="{{ favourite.animal.picture.url }}" alt="{{ favourite.animal.name }}">
                        {% else %}
-                            <img class="slider-animal-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ favorite.animal.name }}">
+                            <img class="slider-animal-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ favourite.animal.name }}">
                         {% endif %}
-                        <p class="slider-animal-name">{{ favorite.animal.name }}</p>
+                        <p class="slider-animal-name">{{ favourite.animal.name }}</p>
                     </a>
               </div>
             
