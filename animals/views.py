@@ -97,7 +97,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            messages.success(request, f"generic welcome message, {username}")
+            messages.success(request, f"Welcome to animatch, {username}!")
             return redirect('animals:home')
     else:
         form = SignUpForm()
@@ -112,7 +112,7 @@ def login_view(request):
         if user:
             if user.is_active:
                 login(request, user)
-                messages.success(request, f"Generic welcome back message, {username}")  
+                messages.success(request, f"Welcome back to Animatch, {username}!")  
                 return redirect(reverse('animals:home'))
             else:
                 #using the messages message thing of design, apparently google says it's prettier and also jsut for page rendering
