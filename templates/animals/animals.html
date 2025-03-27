@@ -80,7 +80,7 @@ Animals for adoption
         {% if animals %}
         <div class="animal-cards-container">
             {% for animal in animals %}
-                <div class="animal-card">
+                <div class="animal-card border">
                     <div class="animal-card-image">
                         {% if animal.picture %}
                             <img class="animal-card-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">

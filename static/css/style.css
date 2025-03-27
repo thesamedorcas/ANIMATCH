@@ -329,7 +329,7 @@ footer {
 /* Individual animal card */
 .animal-card {
     display: flex;
-    flex: 1 1 30%;
+    flex: 0 1 calc(50% - 15px);
     background: #fff;
     padding: 15px;
     border-radius: 8px;
@@ -341,8 +341,12 @@ footer {
 
 /* Image container for animal cards */
 .animal-card-image {
-    flex: 0 0 200px;
+    flex: 1 0 200px;
     padding-right: 15px;
+}
+
+.animal-info {
+    flex: 1 0 200px;
 }
 
 /* Uniform animal card photo */
@@ -356,7 +360,7 @@ footer {
 
 /* Info section for animal cards */
 .animal-card-info {
-    flex: 1;
+    flex: 1 0 200px;
 }
 
 .animal-card-info h3 {

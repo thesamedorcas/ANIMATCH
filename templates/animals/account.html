@@ -99,15 +99,15 @@ My Account
             {% if favourites %}
                 <div class="animal-cards-container">
                     {% for favourite in favourites %}
-                        <div class="animal-card row border mx-2 my-2">
-                            <div class="animal-card-image col-md-6">
+                        <div class="animal-card border">
+                            <div class="animal-card-image">
                                 {% if favourite.animal.picture %}
                                     <img class="animal-card-photo" src="{{ favourite.animal.picture.url }}" alt="{{ favourite.animal.name }}">
                                 {% else %}
                                     <img class="animal-card-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ favourite.animal.name }}">
                                 {% endif %}
                             </div>
-                            <div class="animal-card-info col-md-6">
+                            <div class="animal-card-info">
                                 <h3>{{ favourite.animal.name }}</h3>
                                 <p><strong>Species:</strong> {{ favourite.animal.species }}</p>
                                 <p><strong>Breed:</strong> {{ favourite.animal.breed }}</p>
