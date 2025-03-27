@@ -5,11 +5,11 @@ My Account
 {% endblock %}
 {% block body_block %}
 <div class="account-container">
-    <h1>My Account</h1>
+    <h1 class="mb-4">My Account</h1>
     <div class="account-sections">
-        <div class="user-details">
-            <h2>My Details</h2>
-            <div class="profile-info">
+        <div class="user-details container shadow mb-4">
+            <h2 class="mb-2">My Details</h2>
+            <div class="profile-info container  mb-2">
                 {% if user.userprofile.picture %}
                     <img src="{{ user.userprofile.picture.url }}" alt="{{ user.username }}" class="profile-picture">
                 {% else %}
@@ -29,11 +29,11 @@ My Account
                 </div>
             </div>
             
-            <button id="edit-profile-button" class="btn btn-primary">Edit Profile</button>
+            <button id="edit-profile-button" class="btn btn-primary mb-2">Edit Profile</button>
             
-            <div id="edit-profile-form" style="display: none;">
+            <div id="edit-profile-form" style="display: none;" class="container">
                 <h3>Edit Your Profile</h3>
-                <form method="post" action="{% url 'animals:edit_profile' %}" enctype="multipart/form-data" style="container">
+                <form method="post" action="{% url 'animals:edit_profile' %}" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     
@@ -61,18 +61,18 @@ My Account
                     </div>
 
 
-                    <button type="submit" class="btn btn-success">Save Changes</button>
-                    <button type="button" id="cancel-profile-edit" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-success mb-2">Save Changes</button>
+                    <button type="button" id="cancel-profile-edit" class="btn btn-secondary mb-2">Cancel</button>
                 </form>
             </div>
         </div>
         
-        <div class="favourites">
-            <h2>My Favourites</h2>
+        <div class="favourites container shadow mb-4">
+            <h2 class="mb-2">My Favourites</h2>
             {% if favourites %}
                 <div class="animal-grid">
                     {% for favourite in favourites %}
-                        <div class="animal-card">
+                        <div class="animal-card container shadow-sm mb-2 border">
                             <div class="animal-image">
                                 {% if favourite.animal.picture %}
                                     <img src="{{ favourite.animal.picture.url }}" alt="{{ favourite.animal.name }}">
@@ -98,7 +98,8 @@ My Account
                 <p>You haven't saved any animals as favourites yet.</p>
             {% endif %}
         </div>
-        <div class="my-adoption-requests">
+
+        <div class="my-adoption-requests container shadow mb-4">
             <h2>My Adoption Requests</h2>
             {% if user_adoption_requests %}
                 <div class="request-list">
