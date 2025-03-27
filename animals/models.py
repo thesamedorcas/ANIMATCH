@@ -62,7 +62,7 @@ class AdoptionRequest(models.Model):
     message = models.TextField()
     contact_phone = models.CharField(max_length=20, blank=True)
     date_submitted = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
     admin_notes = models.TextField(blank=True)
 
     def __str__(self):

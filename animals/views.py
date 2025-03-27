@@ -78,11 +78,26 @@ def recommended(request):
         ).exclude(
             id__in=[fav.animal.id for fav in user_favourites]
         )[:10]
+
+
+        if recommended_animals.count() < 5:
+            existing_ids = list(recommended_animals.values_list('id', flat=True))
+            additional_animals = Animal.objects.filter(
+                adopted=False
+            ).exclude(
+                id__in=existing_ids + [fav.animal.id for fav in user_favourites]
+            ).exclude(
+                owner=request.user
+            ).order_by('?')[:5]
+            recommended_animals = list(recommended_animals) + list(additional_animals)
+  
     else:
-        recommended_animals = Animal.objects.filter(adopted=False).order_by('?')[:10]
+        recommended_animals = Animal.objects.filter(adopted=False).exclude(
+            owner=request.user).order_by('?')[:10]
     
     context_dict = {
         'recommended_animals': recommended_animals,
+        'boldmessage': 'Recommended Animals',
     }
     
     return render(request, 'animals/recommended.html', context=context_dict)
@@ -129,11 +144,9 @@ def account(request):
     favourites = Favourite.objects.filter(user=request.user)
     my_animals = Animal.objects.filter(owner=request.user)
     adoption_requests = AdoptionRequest.objects.filter(
-        animal__owner=request.user
+    animal__owner=request.user
     ).order_by('-date_submitted')
-    user_adoption_requests = AdoptionRequest.objects.filter(
-        user=request.user
-    ).order_by('-date_submitted')
+    user_adoption_requests = AdoptionRequest.objects.filter(user=request.user).order_by('-date_submitted')
     #temporary admin check we can change this to user later if you want
     is_admin = request.user.username in ['dorcas', 'euan', 'machan', 'andrea', 'arman']
     

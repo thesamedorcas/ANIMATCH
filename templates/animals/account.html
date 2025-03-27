@@ -218,11 +218,11 @@ My Account
                                 
                                 {% if request.status == 'pending' %}
                                     <div class="admin-actions">
-                                        <form method="post" action="{% url 'animals:process_adoption' request.id 'approved' %}">
+                                        <form method="post" action="{% url 'animals:accept_adoption' request.id %}">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-success">Approve</button>
                                         </form>
-                                        <form method="post" action="{% url 'animals:process_adoption' request.id 'rejected' %}">
+                                        <form method="post" action="{% url 'animals:reject_adoption' request.id %}">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-danger">Reject</button>
                                         </form>
