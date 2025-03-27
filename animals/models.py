@@ -13,7 +13,7 @@ class UserProfile(models.Model):
     
 
 class Animal(models.Model):
-    SPECIES_CHOICES = [ #i wasn't sure what to put, so you can chnage this
+    SPECIES_CHOICES = [ #Animal types/species
         ('Dog', 'Dog'),
         ('Cat', 'Cat'),
         ('Rabbit', 'Rabbit'),
@@ -21,7 +21,7 @@ class Animal(models.Model):
         ('Other', 'Other'),
     ]
     
-    SEX_CHOICES = [
+    SEX_CHOICES = [ #animal sex choices
         ('Male', 'Male'),
         ('Female', 'Female'),
     ]
@@ -56,7 +56,7 @@ class AdoptionRequest(models.Model):
         ('Accepted', 'Accepted'),
         ('Rejected', 'Rejected'),
     ]
-    #I'm really trying ot use descriptive variables, let me know if you want me to change it
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='adoption_requests')
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='adoption_requests')
     message = models.TextField()

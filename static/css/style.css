@@ -266,4 +266,151 @@ footer {
 
 .auth-switch a:hover {
     text-decoration: underline;
+
+}
+
+/* Animal Photo Resizing */
+.animal-photo {
+    max-width: 300px;
+    height: auto;
+}
+
+/* Favourites Slider on Home Page */
+.favourites-slider {
+    margin: 20px 0;
+}
+
+.slider-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    gap: 10px;
+}
+
+.slider-item a {
+    text-decoration: none;
+    color: inherit;
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.slider-animal-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    display: block;
+    margin: 5px auto;
+    transition: transform 0.3s ease;
+}
+
+.slider-animal-photo:hover {
+    transform: scale(1.1);
+}
+
+.slider-animal-name {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #555;
+    margin-top: 8px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Container for animal cards */
+.animal-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: flex-start;
+}
+
+/* Individual animal card */
+.animal-card {
+    display: flex;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: 0;
+}
+
+/* Image container for animal cards */
+.animal-card-image {
+    flex: 0 0 200px;
+    margin-right: 15px;
+}
+
+/* Uniform animal card photo */
+.animal-card-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+/* Info section for animal cards */
+.animal-card-info {
+    flex: 1;
+}
+
+.animal-card-info h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.animal-card-info p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* Button grouping within animal cards */
+.animal-card-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+a.btn.btn-primary {
+    width: 150px !important;
+    padding: 10px 20px !important;
+    font-size: 1em !important;
+    text-align: center;
+    display: inline-block;
+    white-space: nowrap; 
+}
+
+a.btn.btn-danger {
+    background-color: #228B22;
+    border: 1px solid #228B22;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.account-fav-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+    margin: 0 auto;
+}
+
+.profile-picture {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+
 }

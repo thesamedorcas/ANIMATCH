@@ -67,6 +67,7 @@ My Account
             </div>
         </div>
         
+
         <div class="favourites container shadow mb-4">
             <h2 class="mb-2">My Favourites</h2>
             {% if favourites %}
@@ -100,6 +101,7 @@ My Account
         </div>
 
         <div class="my-adoption-requests container shadow mb-4">
+
             <h2>My Adoption Requests</h2>
             {% if user_adoption_requests %}
                 <div class="request-list">
@@ -122,26 +124,63 @@ My Account
                 <p>You haven't submitted any adoption requests yet.</p>
             {% endif %}
         </div>
+
+
+        <div class="favourites">
+            <h2>My Favourites</h2>
+            {% if favourites %}
+                <div class="animal-cards-container">
+                    {% for favourite in favourites %}
+                        <div class="animal-card">
+                            <div class="animal-card-image">
+                                {% if favourite.animal.picture %}
+                                    <img class="animal-card-photo" src="{{ favourite.animal.picture.url }}" alt="{{ favourite.animal.name }}">
+                                {% else %}
+                                    <img class="animal-card-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ favourite.animal.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="animal-card-info">
+                                <h3>{{ favourite.animal.name }}</h3>
+                                <p><strong>Species:</strong> {{ favourite.animal.species }}</p>
+                                <p><strong>Breed:</strong> {{ favourite.animal.breed }}</p>
+                                <p><strong>Status:</strong> {% if favourite.animal.adopted %}Adopted{% else %}Available{% endif %}</p>
+                                <div class="animal-card-buttons">
+                                    <a href="{% url 'animals:animal_profile' favourite.animal.id %}" class="btn btn-danger">View Details</a>
+                                    <form method="post" action="{% url 'animals:remove_favourite' favourite.animal.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Remove</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>You haven't saved any animals as favourites yet.</p>
+            {% endif %}
+        </div>
         
         <div class="my-animals">
             <h2>My Animals</h2>
             {% if my_animals %}
-                <div class="animal-grid">
+                <div class="animal-cards-container">
                     {% for animal in my_animals %}
                         <div class="animal-card">
-                            <div class="animal-image">
+                            <div class="animal-card-image">
                                 {% if animal.picture %}
-                                    <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+                                    <img class="animal-card-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
                                 {% else %}
-                                    <img src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
+                                    <img class="animal-card-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
                                 {% endif %}
                             </div>
-                            <div class="animal-info">
+                            <div class="animal-card-info">
                                 <h3>{{ animal.name }}</h3>
                                 <p><strong>Species:</strong> {{ animal.species }}</p>
                                 <p><strong>Breed:</strong> {{ animal.breed }}</p>
                                 <p><strong>Status:</strong> {% if animal.adopted %}Adopted{% else %}Available{% endif %}</p>
-                                <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-primary">Manage</a>
+                                <div class="animal-card-buttons">
+                                    <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-danger">Manage</a>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -149,6 +188,7 @@ My Account
             {% else %}
                 <p>You haven't listed any animals yet.</p>
             {% endif %}
+
             
             <button id="add-animal-button" class="btn btn-success">List a New Animal</button>
             
@@ -200,6 +240,7 @@ My Account
                         <textarea id="about" name="about" class="form-control" rows="4" required></textarea>
                         </div>
                     </div>
+
                     <div class="form-group row mb-4">
                         <label for="picture" class="col-sm-2 col-form-label">Picture:</label>
                         <div class="col-sm-4">
@@ -211,6 +252,7 @@ My Account
                         <label for="sociable" class="col-sm-2 col-form-label">Sociable:</label>
                         <div class="col-sm-4">
                         <select id="sociable" name="sociable" class="form-select">
+
                             <option value="True">Yes</option>
                             <option value="False">No</option>
                         </select>
@@ -220,7 +262,6 @@ My Account
                     <button type="button" id="cancel-add-animal" class="btn btn-secondary">Cancel</button>
                 </form>
             </div>
-        </div>
         
         {% if is_admin %}
         <div class="adoption-requests">

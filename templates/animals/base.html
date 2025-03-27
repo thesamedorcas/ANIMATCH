@@ -21,6 +21,8 @@
             <nav class="main-nav">
                 <ul>
                     {% if user.is_authenticated %}
+                        <li><a href="{% url 'animals:animals' %}">View Animals</a></li>
+                        <li><a href="{% url 'animals:recommended' %}">Recommended Animals</a></li>
                         <li><a href="{% url 'animals:account' %}">My Account</a></li>
                         <li>
                             <form method="post" action="{% url 'animals:logout' %}">

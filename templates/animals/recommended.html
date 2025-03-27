@@ -7,36 +7,34 @@ Homepage
 {% block body_block %}
 <div class="recommended-container">
     <h1>Recommended for You</h1>
-    <p>Based on your preferences and favorites, we think you might like these animals.</p>
+    <p>Based on your preferences and favourites, we think you might like these animals.</p>
     {% if recommended_animals %}
-        <div class="animal-grid">
+        <div class="animal-cards-container">
         {% for animal in recommended_animals %}
             <div class="animal-card">
-                 <div class="animal-image">
+                 <div class="animal-card-image">
                      {% if animal.picture %}
-                        <img src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+                        <img class="animal-card-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
                     {% else %}
-                        <img src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
+                        <img class="animal-card-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
                     {% endif %}
-                    </div>
-                    <div class="animal-info">
-                        <h3>{{ animal.name }}</h3>
-                        <p><strong>Species:</strong> {{ animal.species }}</p>
-                        <p><strong>Breed:</strong> {{ animal.breed }}</p>
-                        <p><strong>Age:</strong> {{ animal.age }}</p>
-                        <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-primary">View Details</a>
-                    </div>
-                </div>
-            {% endfor %}
+                 </div>
+                 <div class="animal-card-info">
+                     <h3>{{ animal.name }}</h3>
+                     <p><strong>Species:</strong> {{ animal.species }}</p>
+                     <p><strong>Breed:</strong> {{ animal.breed }}</p>
+                     <p><strong>Age:</strong> {{ animal.age }}</p>
+                     <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-primary">View Details</a>
+                 </div>
+            </div>
+        {% endfor %}
         </div>
     {% else %}
         <div class="no-recommendations">
             <p>We don't have any recommendations for you at the moment.</p>
-            <p>Try adding some animals to your favorites to get personalized recommendations!</p>
+            <p>Try adding some animals to your favourites to get personalized recommendations!</p>
             <a href="{% url 'animals:animals' %}" class="btn btn-primary">Browse All Animals</a>
         </div>
     {% endif %}
 </div>
-
-        
 {% endblock %}

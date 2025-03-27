@@ -34,13 +34,14 @@ urlpatterns = [
     path('animal/<int:animal_id>/unfavourite/', views.remove_favourite, name='remove_favourite'),
     path('animal/<int:animal_id>/mark-adopted/', views.mark_adopted, name='mark_adopted'),
     path('animal/<int:animal_id>/mark-available/', views.mark_available, name='mark_available'),
+    path('animals/<int:animal_id>/remove_photo/', views.remove_animal_photo, name='remove_photo'),
 
     # Admin
     path('adoption-request/<int:request_id>/<str:status>/', views.process_adoption, name='process_adoption'),
     path('adoption-request/<int:request_id>/accept/', views.process_adoption, {'status': 'Accepted'}, name='accept_adoption'),
     path('adoption-request/<int:request_id>/reject/', views.process_adoption, {'status': 'Rejected'}, name='reject_adoption'),
 
-    #delte/romve button
+    #delete/romve button
     path('adoption-request/<int:request_id>/<str:status>/', views.process_adoption, name='process_adoption'),
     path('animal/<int:animal_id>/delete/', views.delete_animal, name='delete_animal'),
     

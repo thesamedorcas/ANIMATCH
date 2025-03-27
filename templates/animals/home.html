@@ -11,13 +11,30 @@ Home
             <p>Hello, {{ user.username }}!</p>
             <p> Explore the animals waiting for a loving home.</p>
             <p><a href="{% url 'animals:animals' %}">View Animals</a></p>
-            <form method="post" action="{% url 'animals:logout' %}">
-                {% csrf_token %}
-                <button type="submit">Logout</button>
-            </form>
         {% else %}
             <p>Thank you for visiting Animatch!</p>
             <p>Please <a href="{% url 'animals:login' %}">login</a> or <a href="{% url 'animals:signup' %}">sign up</a> to start your adoption journey.</p>
         {% endif %}
     </div>
+
+    {% if user.is_authenticated and favourites %}
+    <div class="favourites-slider">
+        <h2>Your Favourites</h2>
+        <div class="slider-container">
+            {% for favourite in favourites %}
+              <div class="slider-item">
+                  <a href="{% url 'animals:animal_profile' favourite.animal.id %}">
+                      {% if favourite.animal.picture %}
+                         <img class="slider-animal-photo" src="{{ favourite.animal.picture.url }}" alt="{{ favourite.animal.name }}">
+                       {% else %}
+                            <img class="slider-animal-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ favourite.animal.name }}">
+                        {% endif %}
+                        <p class="slider-animal-name">{{ favourite.animal.name }}</p>
+                    </a>
+              </div>
+            
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
