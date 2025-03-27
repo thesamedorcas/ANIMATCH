@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <title>ANIMATCH - {% block title_block %}WE MATCH YOU TO ANIMALS{% endblock %}</title>
@@ -33,6 +33,16 @@
         </div>
     </header>
     <main>
+        {% if messages %} <!--fixing messages-->
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+                <button class="close-message">&times;</button>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
         <div class="content-container">
             {% block body_block %}
             {% endblock %}
@@ -51,3 +61,26 @@
     </footer>
 </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const closeButtons = document.querySelectorAll('.close-message');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+          
+                const message = this.parentElement;
+                message.style.display = 'none';
+            });
+        });
+        //close message after 6 seconds
+        setTimeout(function() {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(message => {
+                message.style.opacity = '0';
+                message.style.transition = 'opacity 0.6s'; //fade design
+                setTimeout(function() {
+                    message.style.display = 'none';
+                }, 600); 
+            });
+        }, 6000); 
+    });
+</script>
