@@ -74,7 +74,7 @@ My Account
             {% if user_adoption_requests %}
                 <div class="request-list">
                     {% for request in user_adoption_requests %}
-                        <div class="request-card shadow mb-4">
+                        <div class="request-card shadow border mb-2 p-2 rounded">
                         <div class="request-header">
                                 <h3>Request for {{ request.animal.name }}</h3>
                                 <span class="request-date">{{ request.date_submitted|date:"F j, Y" }}</span>
@@ -128,12 +128,12 @@ My Account
             {% endif %}
         </div>
         
-        <div class="my-animals">
+        <div class="my-animals container  border shadow mb-4">
             <h2>My Animals</h2>
             {% if my_animals %}
                 <div class="animal-cards-container">
                     {% for animal in my_animals %}
-                        <div class="animal-card">
+                        <div class="animal-card border">
                             <div class="animal-card-image">
                                 {% if animal.picture %}
                                     <img class="animal-card-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
@@ -158,9 +158,10 @@ My Account
             {% endif %}
 
             
-            <button id="add-animal-button" class="btn btn-success">List a New Animal</button>
-            
-            <div id="add-animal-form" style="display: none;">
+            <button id="add-animal-button" class="btn btn-success mb-2">List a New Animal</button>
+
+
+            <div id="add-animal-form" style="display: none;" class="container border mb-2">
                 <h3>List a New Animal</h3>
                 <form method="post" action="{% url 'animals:add_animal' %}" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -227,17 +228,17 @@ My Account
                     </div>
                     </div>
                     <button type="submit" class="btn btn-success">Add Animal</button>
-                    <button type="button" id="cancel-add-animal" class="btn btn-secondary">Cancel</button>
+                    <button type="button" id="cancel-add-animal" class="btn btn-secondary mb-2">Cancel</button>
                 </form>
             </div>
-        
+        </div>
         {% if is_admin %}
-        <div class="adoption-requests">
+        <div class="adoption-requests container border shadow p-2">
             <h2>Adoption Requests</h2>
             {% if adoption_requests %}
                 <div class="request-list">
                     {% for request in adoption_requests %}
-                        <div class="request-card">
+                        <div class="request-card border-top border-bottom py-2">
                             <div class="request-header">
                                 <h3>Request #{{ request.id }}</h3>
                                 <span class="request-date">{{ request.date_submitted|date:"F j, Y" }}</span>
