@@ -10,7 +10,7 @@ Signup
     <form method="post" action="{% url 'animals:signup' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn">Signup</button>
+        <button type="submit" class="btn btn-success">Signup</button>
     </form>
     <p class="auth-switch">Already have an account? <a href="{% url 'animals:login' %}">Login here</a>.</p>
 </div>
