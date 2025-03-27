@@ -112,7 +112,7 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save() 
-            UserProfile.objects.create(user=user) #created cos i wanna save user in the database
+            UserProfile.objects.create(user=user) 
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
@@ -135,7 +135,6 @@ def login_view(request):
                 messages.success(request, f"Welcome back to Animatch, {username}!")  
                 return redirect(reverse('animals:home'))
             else:
-                #using the messages message thing of design, apparently google says it's prettier and also jsut for page rendering
                 messages.error(request, "Your ANIMATCH account is disabled.")
                 return render(request, 'animals/login.html')
         else:
@@ -152,7 +151,7 @@ def account(request):
     animal__owner=request.user
     ).order_by('-date_submitted')
     user_adoption_requests = AdoptionRequest.objects.filter(user=request.user).order_by('-date_submitted')
-    #temporary admin check we can change this to user later if you want
+    
     is_admin = request.user.username in ['dorcas', 'euan', 'machan', 'andrea', 'arman']
     
     context_dict = {

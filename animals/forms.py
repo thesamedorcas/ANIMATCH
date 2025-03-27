@@ -38,7 +38,7 @@ class AdoptionRequestForm(forms.ModelForm):
     contact_phone = forms.CharField(
         max_length=20, 
         required=False,
-        help_text="Optional: Provide a phone number where we can reach you."
+        help_text="Optional: Please provide a phone number where we can reach you."
     )
     
     class Meta:
