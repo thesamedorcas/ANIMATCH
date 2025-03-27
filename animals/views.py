@@ -175,7 +175,7 @@ def animal_profile(request, animal_id):
         
         
     except Animal.DoesNotExist:
-        messages.error(request, "generic nonexistent(ing? idk) animal message")
+        messages.error(request, "The animal you are currently looking for does not exist.")
         return redirect('animals:animals')
     
           
@@ -263,7 +263,7 @@ def edit_profile(request):
 
         
         profile.save()
-        messages.success(request, "generic profile updated message")
+        messages.success(request, "Your profile has been updated successfully!")
         return redirect('animals:account')
     
     return redirect('animals:account')
@@ -308,7 +308,7 @@ def faq(request):
 @login_required
 def user_logout(request):
     logout(request)
-    messages.success(request, "generic getout message.")
+    messages.success(request, "You have successfully logged out.")
     return redirect(reverse('animals:home'))
 
 def get_server_side_cookie(request, cookie, default_val=None):
@@ -363,13 +363,13 @@ def mark_adopted(request, animal_id):
     
     #I did this for admins, if we decide to change it this is very important to change
     if request.user != animal.owner and not request.user.is_superuser:
-        messages.error(request, "generic not possible to mark message")
+        messages.error(request, "You can only mark your own animals")
         return redirect('animals:animal_profile', animal_id=animal_id)
     
     animal.adopted = True
     animal.save()
     
-    messages.success(request, f"generic animal marked as adopted message") 
+    messages.success(request, f"{animal.name} has been marked as adopted!") 
     return redirect('animals:animal_profile', animal_id=animal_id)
 @login_required
 def mark_available(request, animal_id):
@@ -381,7 +381,7 @@ def mark_available(request, animal_id):
     animal.adopted = False
     animal.save()
     
-    messages.success(request, f"generic animal marked as available message")
+    messages.success(request, f"{animal.name} has been marked as available")
     return redirect('animals:animal_profile', animal_id=animal_id)
 
 @login_required
