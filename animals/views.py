@@ -218,7 +218,7 @@ def request_adoption(request, animal_id):
             adoption_request.animal = animal
             adoption_request.save()
             
-            messages.success(request, f"generic you've submitted animal request message for whatever the animal's name is")
+            messages.success(request, f"Congratulations! You've submitted an adoption request for {animal.name}.")
             return redirect('animals:animal_profile', animal_id=animal_id)
     else:
         form = AdoptionRequestForm()
@@ -231,9 +231,9 @@ def add_favorite(request, animal_id):
     animal = get_object_or_404(Animal, id=animal_id)
     favorite, created = Favorite.objects.get_or_create(user=request.user, animal=animal)  
     if created:
-        messages.success(request, f"generic animal got added to favourties message or something idk")
+        messages.success(request, f"{animal.name} has been added to your favourtites!")
     else:
-        messages.info(request, f"generic animal already in favourites message")
+        messages.info(request, f"{animal.name} is already in your favorites.")
     return redirect('animals:animal_profile', animal_id=animal_id)
 
 @login_required
