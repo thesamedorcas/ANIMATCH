@@ -38,8 +38,8 @@
                 <div class="existing-request">
                     <h3>Your Adoption Request</h3>
                     <p>Status: 
-                        <span class="status-{{ existing_request.status }}">
-                            {{ existing_request.status|title }}
+                        <span class="status-{{ existing_request.status|lower }}">
+                            {{ existing_request.status }}
                         </span>
                     </p>
                     <p>Submitted on: {{ existing_request.date_submitted|date:"F j, Y" }}</p>

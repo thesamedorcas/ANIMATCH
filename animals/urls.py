@@ -38,7 +38,8 @@ urlpatterns = [
     # Admin
     path('adoption-request/<int:request_id>/<str:status>/', views.process_adoption, name='process_adoption'),
 
-    
+    #delte/romve button
+    path('adoption-request/<int:request_id>/<str:status>/', views.process_adoption, name='process_adoption'),
     
    
 ]

@@ -157,9 +157,17 @@ def animal_profile(request, animal_id):
     try:
         animal = Animal.objects.get(id=animal_id)
 
+        #Trying to stop the loop allowing users constantly request
         is_favourite = False
+        existing_request = None 
         if request.user.is_authenticated:
             is_favourite = Favourite.objects.filter(user=request.user, animal=animal).exists()
+        existing_request = AdoptionRequest.objects.filter( 
+                user=request.user,
+                animal=animal
+            ).first()
+
+        is_admin = request.user.username in ['dorcas', 'euan', 'machan', 'andrea', 'arman']
 
 
         context_dict = {
@@ -167,6 +175,8 @@ def animal_profile(request, animal_id):
             'is_favourite': is_favourite,
             'species_choices': Animal.SPECIES_CHOICES,
             'sex_choices': Animal.SEX_CHOICES,
+            'existing_request': existing_request,
+            'is_admin': is_admin,
         }
 
 
@@ -179,8 +189,7 @@ def animal_profile(request, animal_id):
         return redirect('animals:animals')
     
           
-    context_dict = {'animal': animal}
-    return render(request, 'animals/animal_profile.html', context=context_dict)
+    
 @login_required
 def request_adoption(request, animal_id):
     animal = get_object_or_404(Animal, id=animal_id)
@@ -216,6 +225,7 @@ def request_adoption(request, animal_id):
             adoption_request = form.save(commit=False)
             adoption_request.user = request.user
             adoption_request.animal = animal
+            adoption_request.status = 'Pending' #Fix for adoption request issue
             adoption_request.save()
             
             messages.success(request, f"Congratulations! You've submitted an adoption request for {animal.name}.")
@@ -403,3 +413,20 @@ def process_adoption(request, request_id, status):
         messages.info(request, f"Adoption request for {adoption_request.animal.name} has been rejected.")
     
     return redirect('animals:account')
+
+#Adding a remove animal/delete the animal button
+
+@login_required
+def delete_animal(request, animal_id):
+    animal = get_object_or_404(Animal, id=animal_id)
+
+    is_admin = request.user.username in ['dorcas', 'euan', 'machan', 'andrea', 'arman']
+    
+    if request.user != animal.owner and not is_admin and not request.user.is_superuser:
+        messages.error(request, "You are only allowed to delete your own animals.")
+        return redirect('animals:animal_profile', animal_id=animal_id)  
+    animal_name = animal.name
+    animal.delete()
+    
+    messages.success(request, f"{animal_name} has been removed from the database")
+    return redirect('animals:animals')
