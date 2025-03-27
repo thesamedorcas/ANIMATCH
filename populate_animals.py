@@ -2,7 +2,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'animatch.settings')
 import django
 django.setup()
-from animals.models import Animal, Favorite, AdoptionRequest
+from animals.models import Animal, Favourite, AdoptionRequest
 from django.contrib.auth.models import User
 from django.core.files.images import ImageFile
 import random
@@ -100,7 +100,7 @@ def populate():
         )
         created_animals.append(animal)
 
-        creating_sample_favorites(users, created_animals)
+        creating_sample_favourites(users, created_animals)
         create_sample_requests(users, created_animals)
        
     
@@ -143,18 +143,18 @@ def create_animal(name, species, breed, age, sex, about, sociable=True, adopted=
     return a
 #I'm still testing to fix the issue with the database
 
-def creating_sample_favorites(users, animals):
+def creating_sample_favourites(users, animals):
     
-    Favorite.objects.all().delete()
+    Favourite.objects.all().delete()
  
     for user in users:
-        num_favorites = random.randint(1, 2)
-        for _ in range(num_favorites):
+        num_favourites = random.randint(1, 2)
+        for _ in range(num_favourites):
             animal = random.choice(animals)
      
             if animal.owner != user:
-                Favorite.objects.get_or_create(user=user, animal=animal)
-                print(f"User {user.username} favorited {animal.name}")  
+                Favourite.objects.get_or_create(user=user, animal=animal)
+                print(f"User {user.username} favourited {animal.name}")  
 def create_sample_requests(users, animals):
    
     AdoptionRequest.objects.all().delete()

@@ -38,8 +38,12 @@ urlpatterns = [
 
     # Admin
     path('adoption-request/<int:request_id>/<str:status>/', views.process_adoption, name='process_adoption'),
+    path('adoption-request/<int:request_id>/accept/', views.process_adoption, {'status': 'Accepted'}, name='accept_adoption'),
+    path('adoption-request/<int:request_id>/reject/', views.process_adoption, {'status': 'Rejected'}, name='reject_adoption'),
 
-    
+    #delte/romve button
+    path('adoption-request/<int:request_id>/<str:status>/', views.process_adoption, name='process_adoption'),
+    path('animal/<int:animal_id>/delete/', views.delete_animal, name='delete_animal'),
     
    
 ]

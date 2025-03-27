@@ -83,11 +83,26 @@ def recommended(request):
         ).exclude(
             id__in=[fav.animal.id for fav in user_favourites]
         )[:10]
+
+
+        if recommended_animals.count() < 5:
+            existing_ids = list(recommended_animals.values_list('id', flat=True))
+            additional_animals = Animal.objects.filter(
+                adopted=False
+            ).exclude(
+                id__in=existing_ids + [fav.animal.id for fav in user_favourites]
+            ).exclude(
+                owner=request.user
+            ).order_by('?')[:5]
+            recommended_animals = list(recommended_animals) + list(additional_animals)
+  
     else:
-        recommended_animals = Animal.objects.filter(adopted=False).order_by('?')[:10]
+        recommended_animals = Animal.objects.filter(adopted=False).exclude(
+            owner=request.user).order_by('?')[:10]
     
     context_dict = {
         'recommended_animals': recommended_animals,
+        'boldmessage': 'Recommended Animals',
     }
     
     return render(request, 'animals/recommended.html', context=context_dict)
@@ -102,7 +117,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            messages.success(request, f"generic welcome message, {username}")
+            messages.success(request, f"Welcome to animatch, {username}!")
             return redirect('animals:home')
     else:
         form = SignUpForm()
@@ -117,7 +132,7 @@ def login_view(request):
         if user:
             if user.is_active:
                 login(request, user)
-                messages.success(request, f"Generic welcome back message, {username}")  
+                messages.success(request, f"Welcome back to Animatch, {username}!")  
                 return redirect(reverse('animals:home'))
             else:
                 #using the messages message thing of design, apparently google says it's prettier and also jsut for page rendering
@@ -134,11 +149,9 @@ def account(request):
     favourites = Favourite.objects.filter(user=request.user)
     my_animals = Animal.objects.filter(owner=request.user)
     adoption_requests = AdoptionRequest.objects.filter(
-        animal__owner=request.user
+    animal__owner=request.user
     ).order_by('-date_submitted')
-    user_adoption_requests = AdoptionRequest.objects.filter(
-        user=request.user
-    ).order_by('-date_submitted')
+    user_adoption_requests = AdoptionRequest.objects.filter(user=request.user).order_by('-date_submitted')
     #temporary admin check we can change this to user later if you want
     is_admin = request.user.username in ['dorcas', 'euan', 'machan', 'andrea', 'arman']
     
@@ -162,9 +175,17 @@ def animal_profile(request, animal_id):
     try:
         animal = Animal.objects.get(id=animal_id)
 
+        #Trying to stop the loop allowing users constantly request
         is_favourite = False
+        existing_request = None 
         if request.user.is_authenticated:
             is_favourite = Favourite.objects.filter(user=request.user, animal=animal).exists()
+        existing_request = AdoptionRequest.objects.filter( 
+                user=request.user,
+                animal=animal
+            ).first()
+
+        is_admin = request.user.username in ['dorcas', 'euan', 'machan', 'andrea', 'arman']
 
 
         context_dict = {
@@ -172,6 +193,8 @@ def animal_profile(request, animal_id):
             'is_favourite': is_favourite,
             'species_choices': Animal.SPECIES_CHOICES,
             'sex_choices': Animal.SEX_CHOICES,
+            'existing_request': existing_request,
+            'is_admin': is_admin,
         }
 
 
@@ -180,12 +203,11 @@ def animal_profile(request, animal_id):
         
         
     except Animal.DoesNotExist:
-        messages.error(request, "generic nonexistent(ing? idk) animal message")
+        messages.error(request, "The animal you are currently looking for does not exist.")
         return redirect('animals:animals')
     
           
-    context_dict = {'animal': animal}
-    return render(request, 'animals/animal_profile.html', context=context_dict)
+    
 @login_required
 def request_adoption(request, animal_id):
     animal = get_object_or_404(Animal, id=animal_id)
@@ -221,9 +243,10 @@ def request_adoption(request, animal_id):
             adoption_request = form.save(commit=False)
             adoption_request.user = request.user
             adoption_request.animal = animal
+            adoption_request.status = 'Pending' #Fix for adoption request issue
             adoption_request.save()
             
-            messages.success(request, f"generic you've submitted animal request message for whatever the animal's name is")
+            messages.success(request, f"Congratulations! You've submitted an adoption request for {animal.name}.")
             return redirect('animals:animal_profile', animal_id=animal_id)
     else:
         form = AdoptionRequestForm()
@@ -236,9 +259,9 @@ def add_favourite(request, animal_id):
     animal = get_object_or_404(Animal, id=animal_id)
     favourite, created = Favourite.objects.get_or_create(user=request.user, animal=animal)  
     if created:
-        messages.success(request, f"generic animal got added to favourties message or something idk")
+        messages.success(request, f"{animal.name} has been added to your favourites!")
     else:
-        messages.info(request, f"generic animal already in favourites message")
+        messages.info(request, f"{animal.name} is already in your favourites.")
     return redirect('animals:animal_profile', animal_id=animal_id)
 
 @login_required
@@ -247,9 +270,9 @@ def remove_favourite(request, animal_id):
     try:
         favourite = Favourite.objects.get(user=request.user, animal=animal)
         favourite.delete()
-        messages.success(request, f"generic i removed animal from favourates message")
+        messages.success(request, f"{animal.name} has been removed from your favourites.")
     except Favourite.DoesNotExist:
-        messages.error(request, f"generic animmal not in favourites message")
+        messages.error(request, f"{animal.name} is not in your favourites.")
 
     if request.META.get('HTTP_REFERER') and 'account' in request.META.get('HTTP_REFERER'):
         return redirect('animals:account')
@@ -268,7 +291,7 @@ def edit_profile(request):
 
         
         profile.save()
-        messages.success(request, "generic profile updated message")
+        messages.success(request, "Your profile has been updated successfully!")
         return redirect('animals:account')
     
     return redirect('animals:account')
@@ -331,7 +354,7 @@ def faq(request):
 @login_required
 def user_logout(request):
     logout(request)
-    messages.success(request, "generic getout message.")
+    messages.success(request, "You have successfully logged out.")
     return redirect(reverse('animals:home'))
 
 def get_server_side_cookie(request, cookie, default_val=None):
@@ -386,13 +409,13 @@ def mark_adopted(request, animal_id):
     
     #I did this for admins, if we decide to change it this is very important to change
     if request.user != animal.owner and not request.user.is_superuser:
-        messages.error(request, "generic not possible to mark message")
+        messages.error(request, "You can only mark your own animals")
         return redirect('animals:animal_profile', animal_id=animal_id)
     
     animal.adopted = True
     animal.save()
     
-    messages.success(request, f"generic animal marked as adopted message") 
+    messages.success(request, f"{animal.name} has been marked as adopted!") 
     return redirect('animals:animal_profile', animal_id=animal_id)
 @login_required
 def mark_available(request, animal_id):
@@ -404,7 +427,7 @@ def mark_available(request, animal_id):
     animal.adopted = False
     animal.save()
     
-    messages.success(request, f"generic animal marked as available message")
+    messages.success(request, f"{animal.name} has been marked as available")
     return redirect('animals:animal_profile', animal_id=animal_id)
 
 @login_required
@@ -426,3 +449,20 @@ def process_adoption(request, request_id, status):
         messages.info(request, f"Adoption request for {adoption_request.animal.name} has been rejected.")
     
     return redirect('animals:account')
+
+#Adding a remove animal/delete the animal button
+
+@login_required
+def delete_animal(request, animal_id):
+    animal = get_object_or_404(Animal, id=animal_id)
+
+    is_admin = request.user.username in ['dorcas', 'euan', 'machan', 'andrea', 'arman']
+    
+    if request.user != animal.owner and not is_admin and not request.user.is_superuser:
+        messages.error(request, "You are only allowed to delete your own animals.")
+        return redirect('animals:animal_profile', animal_id=animal_id)  
+    animal_name = animal.name
+    animal.delete()
+    
+    messages.success(request, f"{animal_name} has been removed from the database")
+    return redirect('animals:animals')

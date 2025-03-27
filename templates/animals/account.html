@@ -89,6 +89,29 @@ My Account
                 <p>You haven't saved any animals as favourites yet.</p>
             {% endif %}
         </div>
+        <div class="my-adoption-requests">
+            <h2>My Adoption Requests</h2>
+            {% if user_adoption_requests %}
+                <div class="request-list">
+                    {% for request in user_adoption_requests %}
+                        <div class="request-card">
+                        <div class="request-header">
+                                <h3>Request for {{ request.animal.name }}</h3>
+                                <span class="request-date">{{ request.date_submitted|date:"F j, Y" }}</span>
+                            </div>
+                            <div class="request-details">
+                                <p><strong>Animal:</strong> {{ request.animal.name }} ({{ request.animal.species }})</p>
+                                <p><strong>Status:</strong> <span class="status-{{ request.status|lower }}">{{ request.status }}</span></p>
+                                <p><strong>Message:</strong> {{ request.message }}</p>
+                                <a href="{% url 'animals:animal_profile' request.animal.id %}" class="btn btn-primary">View Animal</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>You haven't submitted any adoption requests yet.</p>
+            {% endif %}
+        </div>
         
         <div class="my-animals">
             <h2>My Animals</h2>
@@ -160,11 +183,11 @@ My Account
                                 
                                 {% if request.status == 'pending' %}
                                     <div class="admin-actions">
-                                        <form method="post" action="{% url 'animals:process_adoption' request.id 'approved' %}">
+                                        <form method="post" action="{% url 'animals:accept_adoption' request.id %}">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-success">Approve</button>
                                         </form>
-                                        <form method="post" action="{% url 'animals:process_adoption' request.id 'rejected' %}">
+                                        <form method="post" action="{% url 'animals:reject_adoption' request.id %}">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-danger">Reject</button>
                                         </form>
