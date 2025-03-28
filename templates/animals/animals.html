@@ -9,10 +9,12 @@ Animals for adoption
 
 {% block body_block %}
     <h1>Animals available for adoption</h1>
-    <div class="action-buttons">
+
+    <div class="animals-page-section action-buttons">
         <a href="{% url 'animals:recommended' %}" class="btn btn-primary">View Recommended Animals</a>
     </div>
-    <div class = "filter-section">  
+
+    <div class="animals-page-section filter-section">
         <button id="toggle-filters" class="btn btn-primary">Show/Hide Filters</button>
         <div id="filter-form" class="filter-form" style="display: none;">
             <h3>Filter Animals</h3>
@@ -23,7 +25,7 @@ Animals for adoption
                         <div class="col-sm-4">
                         <select id="species" name="species" class="form-select">
                             <option value="">Any</option>
-                            {% for choice in species_choices %}
+                            {% for choice in species_choices %} 
                                 <option value="{{ choice.0 }}" {% if request.GET.species == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
                             {% endfor %}
                         </select>
@@ -42,7 +44,7 @@ Animals for adoption
                         <div class="col-sm-4">
                         <select id="sex" name="sex" class="form-select">
                             <option value="">Any</option>
-                            {% for choice in sex_choices %}
+                            {% for choice in sex_choices %} 
                                 <option value="{{ choice.0 }}" {% if request.GET.sex == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
                             {% endfor %}
                         </select>
@@ -84,42 +86,40 @@ Animals for adoption
             </form>
         </div>
     </div>
-  
-    <div class="search-results-section">
+
+    <div class="animals-page-section search-results-section">
         {% if filter_applied %}
-        <h2>Filtered Results ({{ animals|length }} found)</h2>
+            <h2>Filtered Results ({{ animals|length }} found)</h2>
         {% else %}
-        <h2>All Available Animals ({{ animals|length }})</h2>
+            <h2>All Available Animals ({{ animals|length }})</h2>
         {% endif %}
-    
+
         {% if animals %}
-        <div class="animal-cards-container">
-            {% for animal in animals %}
-                <div class="animal-card border">
-                    <div class="animal-card-image">
-                        {% if animal.picture %}
-                            <img class="animal-card-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
-                        {% else %}
-                            <img class="animal-card-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
-                        {% endif %}
+            <div class="animal-cards-container">
+                {% for animal in animals %}
+                    <div class="animal-card border">
+                        <div class="animal-card-image">
+                            {% if animal.picture %}
+                                <img class="animal-card-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
+                            {% else %}
+                                <img class="animal-card-photo" src="{% static 'images/default-animal.jpg' %}" alt="{{ animal.name }}">
+                            {% endif %}
+                        </div>
+                        <div class="animal-info">
+                            <h3>{{ animal.name }}</h3>
+                            <p><strong>ID:</strong> #{{ animal.id }}</p>
+                            <p><strong>Species:</strong> {{ animal.species }}</p>
+                            <p><strong>Breed:</strong> {{ animal.breed }}</p>
+                            <p><strong>Age:</strong> {{ animal.age }}</p>
+                            <p><strong>Sex:</strong> {{ animal.sex }}</p>
+                            <p><strong>Sociable:</strong> {% if animal.sociable %}Yes{% else %}No{% endif %}</p>
+                            <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-primary">View Details</a>
+                        </div>
                     </div>
-                    <div class="animal-info">
-                        <h3>{{ animal.name }}</h3>
-                        <p><strong>ID:</strong> #{{ animal.id }}</p>
-                        <p><strong>Species:</strong> {{ animal.species }}</p>
-                        <p><strong>Breed:</strong> {{ animal.breed }}</p>
-                        <p><strong>Age:</strong> {{ animal.age }}</p>
-                        <p><strong>Sex:</strong> {{ animal.sex }}</p>
-                        <p><strong>Sociable:</strong> {% if animal.sociable %}Yes{% else %}No{% endif %}</p>
-                        <a href="{% url 'animals:animal_profile' animal.id %}" class="btn btn-primary">View Details</a>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
         {% else %}
             <p class="no-results">There are no animals found matching your criteria. Please try different filters or <a href="{% url 'animals:animals' %}">view all animals</a>.</p>
         {% endif %}
     </div>
-</div>
-
 {% endblock %}

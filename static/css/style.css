@@ -437,14 +437,16 @@ a.btn.btn-danger {
     margin: 0 auto;
 }
 
+/* Profile Picture on My Account Page */
 .profile-picture {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
     border-radius: 50%;
     display: block;
-
+    margin: 0 auto;
 }
+
 /* Message */
 .messages {
     max-width: 1200px;
@@ -498,4 +500,8 @@ a.btn.btn-danger {
 .close-message:hover {
     opacity: 1;
 
+}
+
+.animals-page-section {
+    margin-bottom: 30px;
 }
