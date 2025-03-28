@@ -16,11 +16,11 @@
 </head>
 <body>
     <header>
-        <div class="header-container">
+        <div class="header-container" id="header-container">
             <div class="logo">
                 <a href="{% url 'animals:home' %}">ANIMATCH</a>
             </div>
-            <nav class="main-nav">
+            <nav class="main-nav" id="main-nav">
                 <ul>
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'animals:animals' %}">View Animals</a></li>
@@ -45,6 +45,8 @@
                         <li><a href="{% url 'animals:signup' %}">Signup</a></li>
                     {% endif %}
                 </ul>
+                <a href="javascript:void(0);" class="header-icon" onclick="responsiveHeader()">&#9776;</a>
+            </div>
             </nav>
         </div>
     </header>
