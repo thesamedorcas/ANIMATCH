@@ -20,6 +20,7 @@ header {
     padding: 10px 0;
 }
 
+/* Header Container */
 .header-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -36,23 +37,32 @@ header {
     text-decoration: none;
 }
 
+/* Navigation Links */
 .main-nav ul {
     list-style: none;
     display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .main-nav ul li {
     margin-left: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .main-nav ul li a {
     color: #fff;
     text-decoration: none;
     font-size: 1em;
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .main-nav ul li a:hover {
-    text-decoration: underline;
+    font-weight: bold;
 }
 
 .nav-button {
@@ -66,6 +76,22 @@ header {
 
 .nav-button:hover {
     font-weight: bold;
+}
+
+/* Header Profile Picture */
+.header-profile-picture {
+    height: 50px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.header-profile-picture:hover {
+    transform: scale(1.1);
 }
 
 /* Main Content Styles */
