@@ -242,7 +242,7 @@ def request_adoption(request, animal_id):
             adoption_request = form.save(commit=False)
             adoption_request.user = request.user
             adoption_request.animal = animal
-            adoption_request.status = 'Pending' #Fix for adoption request issue
+            adoption_request.status = 'pending' #Fix for adoption request issue
             adoption_request.save()
             
             messages.success(request, f"Congratulations! You've submitted an adoption request for {animal.name}.")
