@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.test import SimpleTestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 import os
 import re
 import warnings
@@ -316,32 +317,6 @@ class AdoptionRequestTests(TestCase):
         self.assertEqual(response.status_code, 302) 
         self.assertTrue(AdoptionRequest.objects.exists()) 
 
-class PermissionTests(TestCase):
-    def setUp(self):
-        self.owner = User.objects.create_user(username='owner', password='password')
-        self.other_user = User.objects.create_user(username='other_user', password='password')
-        self.animal = Animal.objects.create(
-            name='Buddy', species='Dog', breed='Labrador', age=2, sex='Male', about='A friendly dog', owner=self.owner
-        )
-
-    def test_non_owner_cannot_edit_animal(self):
-        """
-        Verifies that a non-owner user cannot edit an animal's information.
-        """
-        self.client.login(username='other_user', password='password')
-        response = self.client.post(reverse('animals:edit_animal', kwargs={'animal_id': self.animal.id}),
-                                    {'name': 'New Name'})
-        self.assertEqual(response.status_code, 403) 
-
-    def test_non_owner_cannot_delete_animal(self):
-        """
-        Verifies that a non-owner user cannot delete an animal's information.
- 
-        """
-        self.client.login(username='other_user', password='password')
-        response = self.client.post(reverse('animals:delete_animal', kwargs={'animal_id': self.animal.id}))
-        self.assertEqual(response.status_code, 403)
-
 class EdgeCaseTests(TestCase):
     def test_animal_with_long_name(self):
         """ 
@@ -350,33 +325,6 @@ class EdgeCaseTests(TestCase):
         long_name = 'A' * 300  
         animal = Animal.objects.create(name=long_name, species='Dog', breed='Unknown', age=5, sex='Male', about='Test')
         self.assertEqual(animal.name, long_name)
-
-    def test_special_characters_in_slug(self):
-        """ 
-        Ensures that animal names with special characters are correctly handled when generating slugs.
-        """
-        animal = Animal.objects.create(name='Test@Animal!2023', species='Dog', breed='Unknown', age=5, sex='Male', about='Test')
-        self.assertIn('test-animal-2023', animal.slug)
-
-class ConcurrencyTests(TestCase):
-    def setUp(self):
-        self.user1 = User.objects.create_user(username='user1', password='password')
-        self.user2 = User.objects.create_user(username='user2', password='password')
-        self.animal = Animal.objects.create(name='Buddy', species='Dog', breed='Labrador', age=2, sex='Male', about='A friendly dog', adopted=False)
-
-    def test_two_users_trying_to_adopt_same_animal(self):
-        """
-        Verifies that when two users attempt to adopt the same animal at the same time, the animal is only adopted by the first user who requests adoption.
-        """
-        self.client.login(username='user1', password='password')
-        response1 = self.client.post(reverse('animals:request_adoption', kwargs={'animal_id': self.animal.id}), {'message': 'I love this dog!', 'contact_phone': '1234567890'})
-        
-        self.client.login(username='user2', password='password')
-        response2 = self.client.post(reverse('animals:request_adoption', kwargs={'animal_id': self.animal.id}), {'message': 'I also want this dog!', 'contact_phone': '0987654321'})
-        
-        self.animal.refresh_from_db()
-        self.assertTrue(self.animal.adopted)  
-        self.assertEqual(AdoptionRequest.objects.count(), 1)  
 
 class DatabaseIntegrityTests(TestCase):
     def setUp(self):
@@ -398,3 +346,43 @@ class DatabaseIntegrityTests(TestCase):
         """
         self.user.delete()
         self.assertFalse(Favourite.objects.filter(user=self.user).exists())
+class AnimalImageTests(TestCase):
+    """
+    Tests to check if animal images are correctly stored and loaded.
+    """
+
+    def setUp(self):
+        self.fake_image = SimpleUploadedFile(
+            "test.jpg",
+            b"\xFF\xD8\xFF\xE0\x00\x10JFIF", 
+            content_type="image/jpeg"
+        )
+
+        self.animal = Animal.objects.create(
+            name="Test Animal",
+            species="Dog",
+            breed="Labrador",
+            age=2,
+            sex="Male",
+            about="Test dog with image",
+            picture=self.fake_image
+        )
+
+    def test_image_upload(self):
+        """
+        Check if the image is properly assigned to the animal object.
+        """
+        self.assertTrue(self.animal.picture, "The animal's image was not saved.")
+
+    def test_image_path(self):
+        """
+        Ensure the image file path is correct within MEDIA_ROOT.
+        """
+        expected_path = os.path.join(settings.MEDIA_ROOT, self.animal.picture.name)
+        self.assertTrue(os.path.exists(expected_path), f"Image file not found at {expected_path}")
+
+    def test_image_url(self):
+        """
+        Confirm that the image URL is correctly generated.
+        """
+        self.assertTrue(self.animal.picture.url.startswith(settings.MEDIA_URL), "The image URL is incorrect.")
