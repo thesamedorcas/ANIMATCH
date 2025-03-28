@@ -18,7 +18,8 @@ class Animal(models.Model):
         ('Cat', 'Cat'),
         ('Rabbit', 'Rabbit'),
         ('Bird', 'Bird'),
-        ('Other', 'Other'),
+        ('Reptile', 'Reptile'),
+        ('Rodent', 'Rodent'),
     ]
     
     SEX_CHOICES = [ #animal sex choices
