@@ -444,8 +444,8 @@ def process_adoption(request, request_id, status):
         animal.owner = adoption_request.user
         animal.save()
         
-        messages.success(request, f"Adoption request for {adoption_request.animal.name} has been approved.")
-    else:
+        messages.success(request, f"Adoption request for {animal.name} has been approved.")
+    elif status == 'Rejected':
         messages.info(request, f"Adoption request for {adoption_request.animal.name} has been rejected.")
     
     return redirect('animals:account')
