@@ -227,9 +227,9 @@ def request_adoption(request, animal_id):
         animal=animal,
         
     ).first()
-    if request.user != adoption_request.animal.owner and request.user.username not in ['euan', 'machan', 'andrea', 'arman', 'dorcas']:
-        messages.error(request, "You don't have permission to process adoption requests.")
-        return redirect('animals:account')
+    # if request.user != adoption_request.animal.owner and request.user.username not in ['euan', 'machan', 'andrea', 'arman', 'dorcas']:
+    #     messages.error(request, "You don't have permission to process adoption requests.")
+    #     return redirect('animals:account')
     if existing_request:
         if existing_request.status == 'pending':
             messages.warning(request, f"You already have a pending adoption request for {animal.name}.")
