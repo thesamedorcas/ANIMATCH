@@ -28,7 +28,10 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: row;
 }
+
+
 
 .logo a {
     font-size: 1.8em;
@@ -47,9 +50,12 @@ header {
 }
 
 .main-nav ul li {
-    margin-left: 20px;
     display: flex;
+    flex: 1 1 25%;
+    padding: 10px;
     align-items: center;
+    justify-content: center;
+    min-height: 50px;
 }
 
 .main-nav ul li a {
@@ -63,6 +69,75 @@ header {
 
 .main-nav ul li a:hover {
     font-weight: bold;
+}
+
+.main-nav {
+    overflow: hidden;
+    flex: 0 0 40%;
+}
+
+
+
+/* responsive header */
+a.header-icon:hover {
+    background-color: #ddd;
+    color: white;
+    margin-right: 5px;
+}
+
+.header-icon {
+    display: none;
+    font-size: 1.8em;
+    color: white;
+}
+
+@media screen and (max-width: 600px) {
+    .header-container.responsive {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .main-nav ul li {
+        display: none;
+    }
+
+    .main-nav a.header-icon {
+        float: right;
+        display: block;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .header-container.responsive {
+        position: relative;
+    }
+
+    .header-container.responsive .header-icon {
+        position: absolute;
+        right: 20px;
+        top: 0;
+    }
+
+    .header-container.responsive ul {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .header-container.responsive ul li {
+        float: none;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        text-align: left;
+        border-top: 1px solid rgb(0, 78, 4);
+        border-left: 0px solid gray;
+    }
+
+    .main-nav {
+        width: 100%;
+    }
+
 }
 
 .nav-button {
@@ -356,6 +431,7 @@ footer {
 .animal-card {
     display: flex;
     flex: 0 1 calc(50% - 15px);
+    flex-direction: row;
     background: #fff;
     padding: 15px;
     border-radius: 8px;
@@ -363,6 +439,23 @@ footer {
     width: 100%;
     max-width: 600px;
     margin: 0;
+}
+
+@media screen and (max-width: 600px) {
+
+    .animal-card {
+        flex-direction: column;
+
+    }
+
+    .animal-card-info {
+        margin-top: 10px;
+    }
+
+    .animal-cards-container {
+        justify-content: center;
+    }
+
 }
 
 /* Image container for animal cards */
@@ -399,6 +492,7 @@ footer {
     font-size: 0.95rem;
     color: #555;
 }
+
 
 /* Button grouping within animal cards */
 .animal-card-buttons {

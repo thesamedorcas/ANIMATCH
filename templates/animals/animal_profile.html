@@ -9,9 +9,9 @@
 
 {% block body_block %}
 <div class = "animal-profile-container">
-    <h1>{{ animal.name }}</h1>
+    <h1 class="mb-2">{{ animal.name }}</h1>
     <div class="animal-profile">
-        <div class="animal-profile-image">
+        <div class="animal-profile-image mb-3">
         {% if animal.picture %}
             <img class="animal-photo" src="{{ animal.picture.url }}" alt="{{ animal.name }}">
         {% else %}
