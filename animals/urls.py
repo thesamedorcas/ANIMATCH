@@ -37,7 +37,7 @@ urlpatterns = [
     path('animals/<int:animal_id>/remove_photo/', views.remove_animal_photo, name='remove_photo'),
 
     # Admin
-    path('adoption-request/<int:request_id>/<str:status>/', views.process_adoption, name='process_adoption'),
+   
     path('adoption-request/<int:request_id>/accept/', views.process_adoption, {'status': 'Accepted'}, name='accept_adoption'),
     path('adoption-request/<int:request_id>/reject/', views.process_adoption, {'status': 'Rejected'}, name='reject_adoption'),
 

@@ -227,6 +227,7 @@ def request_adoption(request, animal_id):
         animal=animal,
         
     ).first()
+    
     if existing_request:
         if existing_request.status == 'pending':
             messages.warning(request, f"You already have a pending adoption request for {animal.name}.")
@@ -441,18 +442,25 @@ def process_adoption(request, request_id, status):
     # Update the adoption request status
     adoption_request.status = status
     adoption_request.save()
-
-    # Handle accepted and rejected requests
     if status == 'Accepted':
         animal = adoption_request.animal
         animal.adopted = True
         animal.owner = adoption_request.user
         animal.save()
         
-        messages.success(request, f"Adoption request for {adoption_request.animal.name} has been approved.")
+        other_requests = AdoptionRequest.objects.filter(
+            animal=animal, 
+            status='Pending'
+        ).exclude(id=request_id)
+        
+        for other_request in other_requests:
+            other_request.status = 'Rejected'
+            other_request.save()
+            
+        messages.success(request, f"Adoption request for {animal.name} has been approved.")
     else:
         messages.info(request, f"Adoption request for {adoption_request.animal.name} has been rejected.")
-
+    
     return redirect('animals:account')
 
 #Adding a remove animal/delete the animal button
