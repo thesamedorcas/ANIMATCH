@@ -431,6 +431,7 @@ footer {
 .animal-card {
     display: flex;
     flex: 0 1 calc(50% - 15px);
+    flex-direction: row;
     background: #fff;
     padding: 15px;
     border-radius: 8px;
@@ -438,6 +439,23 @@ footer {
     width: 100%;
     max-width: 600px;
     margin: 0;
+}
+
+@media screen and (max-width: 600px) {
+
+    .animal-card {
+        flex-direction: column;
+
+    }
+
+    .animal-card-info {
+        margin-top: 10px;
+    }
+
+    .animal-cards-container {
+        justify-content: center;
+    }
+
 }
 
 /* Image container for animal cards */
@@ -474,6 +492,7 @@ footer {
     font-size: 0.95rem;
     color: #555;
 }
+
 
 /* Button grouping within animal cards */
 .animal-card-buttons {

@@ -26,12 +26,13 @@
                         <li><a href="{% url 'animals:animals' %}">View Animals</a></li>
                         <li><a href="{% url 'animals:recommended' %}">Recommended Animals</a></li>
                         <li>
-                            <a href="{% url 'animals:account' %}" class="profile-link">
+                            <a href="{% url 'animals:account' %}" class="profile-link" id="profile-link">
                                 {% if user.userprofile.picture %}
                                     <img src="{{ user.userprofile.picture.url }}" alt="{{ user.username }}" class="header-profile-picture">
                                 {% else %}
                                     <img src="{% static 'images/default-profile_pic.jpg' %}" alt="{{ user.username }}" class="header-profile-picture">
                                 {% endif %}
+                                
                             </a>
                         </li>
                         <li>
