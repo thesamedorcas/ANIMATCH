@@ -20,6 +20,7 @@
 - [Bootstrap](https://getbootstrap.com/)  
 - [W3Schools](https://www.w3schools.com/)
 - [Stack Overflow](https://stackoverflow.com/)
+- [Django Documentation](https://docs.djangoproject.com/en/5.1/)
 
 
 
