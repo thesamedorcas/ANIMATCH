@@ -432,19 +432,28 @@ def mark_available(request, animal_id):
 @login_required
 def process_adoption(request, request_id, status):
     adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
-    if request.user.username not in [ 'euan', 'machan', 'andrea', 'arman', 'dorcas'] and (adoption_request.animal.owner != request.user):
+
+    # Check permissions
+    if request.user.username not in ['euan', 'machan', 'andrea', 'arman', 'dorcas'] and (adoption_request.animal.owner != request.user):
         messages.error(request, "You don't have permission to process adoption requests.")
-        return redirect('animals:account')   
-   
+        return redirect('animals:account')
+
+    # Update the adoption request status
     adoption_request.status = status
     adoption_request.save()
+
+    # Handle accepted and rejected requests
     if status == 'Accepted':
-        mark_adopted(request, adoption_request.animal.id)
-        
-        messages.success(request, f"Adoption request for {animal.name} has been approved.")
+        animal = adoption_request.animal
+        if not animal.adopted:
+            animal.adopted = True
+            animal.save()
+            messages.success(request, f"Adoption request for {animal.name} has been approved.")
+        else:
+            messages.warning(request, f"{animal.name} is already marked as adopted.")
     elif status == 'Rejected':
         messages.info(request, f"Adoption request for {adoption_request.animal.name} has been rejected.")
-    
+
     return redirect('animals:account')
 
 #Adding a remove animal/delete the animal button
