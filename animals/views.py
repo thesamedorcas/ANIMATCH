@@ -439,10 +439,7 @@ def process_adoption(request, request_id, status):
     adoption_request.status = status
     adoption_request.save()
     if status == 'Accepted':
-        animal = adoption_request.animal
-        animal.adopted = True
-        animal.owner = adoption_request.user
-        animal.save()
+        mark_adopted(request, adoption_request.animal.id)
         
         messages.success(request, f"Adoption request for {animal.name} has been approved.")
     elif status == 'Rejected':
