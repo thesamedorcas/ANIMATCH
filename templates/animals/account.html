@@ -16,7 +16,7 @@ My Account
                 {% if user.userprofile.picture %}
                     <img src="{{ user.userprofile.picture.url }}" alt="{{ user.username }}" class="profile-picture">
                 {% else %}
-                    <img src="{% static 'images/default-profile.jpg' %}" alt="{{ user.username }}" class="profile-picture">
+                    <img src="{% static 'images/default-profile_pic.jpg' %}" alt="{{ user.username }}" class="profile-picture">
                 {% endif %}
                 
                 <div class="profile-text">
