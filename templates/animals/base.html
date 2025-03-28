@@ -30,7 +30,7 @@
                                 {% if user.userprofile.picture %}
                                     <img src="{{ user.userprofile.picture.url }}" alt="{{ user.username }}" class="header-profile-picture">
                                 {% else %}
-                                    <img src="{% static 'images/default-profile.jpg' %}" alt="{{ user.username }}" class="header-profile-picture">
+                                    <img src="{% static 'images/default-profile_pic.jpg' %}" alt="{{ user.username }}" class="header-profile-picture">
                                 {% endif %}
                             </a>
                         </li>
