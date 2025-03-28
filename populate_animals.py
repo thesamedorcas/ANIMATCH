@@ -178,7 +178,7 @@ def populate():
             animal_data['sociable'],
             animal_data['adopted'],
             owner,
-            animal_images.get(animal_data['name'])
+            animal_images.get(animal_data['name'])  # Get the image filename
         )
         created_animals.append(animal)
 
@@ -191,11 +191,9 @@ def populate():
 
 
 def create_animal(name, species, breed, age, sex, about, sociable=True, adopted=False, owner=None, image_filename=None):
-    slug = slugify(f"{name}-{species}")
     a, created = Animal.objects.get_or_create(
-        slug=slug,
+        name=name,
         defaults={
-            'name': name,
             'species': species,
             'breed': breed,
             'age': age,
@@ -209,7 +207,6 @@ def create_animal(name, species, breed, age, sex, about, sociable=True, adopted=
 
     if not created:
         # Update fields if the animal already exists
-        a.name = name
         a.species = species
         a.breed = breed
         a.age = age
@@ -219,8 +216,8 @@ def create_animal(name, species, breed, age, sex, about, sociable=True, adopted=
         a.adopted = adopted
         a.owner = owner
 
-    # Attach the image only if it doesn't already exist and the animal is newly created
-    if created and image_filename:
+    # Attach the image only if it doesn't already exist
+    if image_filename and not a.picture:
         image_path = os.path.join(os.getcwd(), 'media', 'animal_images', image_filename)
         if os.path.exists(image_path):
             with open(image_path, 'rb') as image_file:
