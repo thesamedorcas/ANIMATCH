@@ -433,8 +433,8 @@ def mark_available(request, animal_id):
 @login_required
 def process_adoption(request, request_id, status):
     adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
-    if request.user.username not in [ 'euan', 'machan', 'andrea', 'arman', 'dorcas'] or not (adoption_request.animal.owner):
-        messages.error(request, "You don't have permission to process adoption requests, gerroutttt brooo.")
+    if request.user.username not in [ 'euan', 'machan', 'andrea', 'arman', 'dorcas'] or not (adoption_request.animal.owner == request.user.username):
+        messages.error(request, "You don't have permission to process adoption requests.")
         return redirect('animals:account')   
    
     adoption_request.status = status
