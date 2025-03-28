@@ -182,8 +182,7 @@ def populate():
         )
         created_animals.append(animal)
 
-        creating_sample_favourites(users, created_animals)
-        create_sample_requests(users, created_animals)
+        
     
     # Printing all the animals
     for a in Animal.objects.all():
@@ -228,42 +227,6 @@ def create_animal(name, species, breed, age, sex, about, sociable=True, adopted=
 
     a.save()
     return a
-
-def creating_sample_favourites(users, animals):
-    
-    Favourite.objects.all().delete()
- 
-    for user in users:
-        num_favourites = random.randint(1, 2)
-        for _ in range(num_favourites):
-            animal = random.choice(animals)
-     
-            if animal.owner != user:
-                Favourite.objects.get_or_create(user=user, animal=animal)
-                print(f"User {user.username} favourited {animal.name}")  
-def create_sample_requests(users, animals):
-   
-    AdoptionRequest.objects.all().delete()
-    
-
-    for _ in range(4):
-        user = random.choice(users)
-        
-        available_animals = [a for a in animals if a.owner != user and not a.adopted]
-        
-        if available_animals:
-            animal = random.choice(available_animals)
-            status = random.choice(['pending', 'approved', 'rejected'])
-            
-            AdoptionRequest.objects.create(
-                user=user,
-                animal=animal,
-                message=f"I would love to adopt {animal.name}",
-                contact_phone=f"0-{random.randint(1000, 9999)}-{random.randint(1000, 9999)}",
-                status=status
-            )
-            print(f"Created adoption request: {user.username} for {animal.name} ({status})")
-    
 
 if __name__ == '__main__':
     print('Starting the ANIMATCH population script...')
