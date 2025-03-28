@@ -445,13 +445,12 @@ def process_adoption(request, request_id, status):
     # Handle accepted and rejected requests
     if status == 'Accepted':
         animal = adoption_request.animal
-        if not animal.adopted:
-            animal.adopted = True
-            animal.save()
-            messages.success(request, f"Adoption request for {animal.name} has been approved.")
-        else:
-            messages.warning(request, f"{animal.name} is already marked as adopted.")
-    elif status == 'Rejected':
+        animal.adopted = True
+        animal.owner = adoption_request.user
+        animal.save()
+        
+        messages.success(request, f"Adoption request for {adoption_request.animal.name} has been approved.")
+    else:
         messages.info(request, f"Adoption request for {adoption_request.animal.name} has been rejected.")
 
     return redirect('animals:account')
