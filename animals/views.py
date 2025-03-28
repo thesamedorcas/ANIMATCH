@@ -160,6 +160,7 @@ def account(request):
         'my_animals': my_animals,
         'is_admin': is_admin,
         'user_adoption_requests': user_adoption_requests,
+        'adoption_requests': adoption_requests,
         'species_choices': Animal.SPECIES_CHOICES,
         'sex_choices': Animal.SEX_CHOICES,
     }
@@ -431,10 +432,11 @@ def mark_available(request, animal_id):
 
 @login_required
 def process_adoption(request, request_id, status):
-    if request.user.username not in [ 'euan', 'machan', 'andrea', 'arman', 'dorcas']:
+    adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
+    if request.user.username not in [ 'euan', 'machan', 'andrea', 'arman', 'dorcas'] or not (adoption_request.animal.owner == request.user):
         messages.error(request, "You don't have permission to process adoption requests, gerroutttt brooo.")
         return redirect('animals:account')   
-    adoption_request = get_object_or_404(AdoptionRequest, id=request_id)
+   
     adoption_request.status = status
     adoption_request.save()
     if status == 'approved':

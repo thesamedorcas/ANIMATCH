@@ -235,7 +235,7 @@ My Account
                 </form>
             </div>
         </div>
-        {% if is_admin %}
+        {% if is_admin or adoption_requests%}
         <div class="adoption-requests container border shadow p-2">
             <h2>Adoption Requests</h2>
             {% if adoption_requests %}
